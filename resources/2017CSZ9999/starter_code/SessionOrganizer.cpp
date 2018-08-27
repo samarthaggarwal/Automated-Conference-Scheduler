@@ -1,7 +1,7 @@
-/* 
+/*
  * File:   SessionOrganizer.cpp
  * Author: Kapil Thakkar
- * 
+ *
  */
 
 #include "SessionOrganizer.h"
@@ -65,10 +65,10 @@ void SessionOrganizer::readInInputFile ( string filename )
     }
 
     processingTimeInMinutes = atof ( lines[0].c_str () );
-    papersInSession = atoi ( lines[1].c_str () );
-    parallelTracks = atoi ( lines[2].c_str () );
-    sessionsInTrack = atoi ( lines[3].c_str () );
-    tradeoffCoefficient = atof ( lines[4].c_str () );
+    papersInSession = atoi ( lines[1].c_str () ); // parameter k
+    parallelTracks = atoi ( lines[2].c_str () ); // parameter p
+    sessionsInTrack = atoi ( lines[3].c_str () ); // parameter t
+    tradeoffCoefficient = atof ( lines[4].c_str () ); // parameter C
 
     int n = lines.size ( ) - 5;
     double ** tempDistanceMatrix = new double*[n];
