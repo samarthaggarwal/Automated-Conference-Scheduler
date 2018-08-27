@@ -1,65 +1,39 @@
-/* 
+/*
  * File:   Track.cpp
  * Author: Kapil Thakkar
- * 
  */
 
 #include <stdlib.h>
-
 #include "Track.h"
 
-Track::Track ( )
+Track::Track()
 {
-    this->sessionsInTrack = 0;
+    this -> t = 0;
 }
 
-Track::Track ( int sessionsInTrack )
+Track::Track ( int t )
 {
-    this->sessionsInTrack = sessionsInTrack;
-    sessions = ( Session * ) malloc ( sizeof (Session ) * sessionsInTrack );
+    this -> t = t;
+    sessions = (Session *)malloc(sizeof(Session) * t);
 }
 
-void Track::setPaper ( int sessionIndex, int paperIndex, int paperId )
+void Track::setPaper(int sessionIndex, int paperIndex, int paperId)
 {
-    if ( sessionIndex < this->sessionsInTrack )
-    {
-        Session curSession = sessions[sessionIndex];
-        curSession.setPaper ( paperIndex, paperId );
-    }
-    else
-    {
-        cout << "Index out of bound - Track::setPaper" << endl;
-        exit ( 0 );
-    }
+    Session curSession = sessions[sessionIndex];
+    curSession.setPaper(paperIndex, paperId);
 }
 
-int Track::getNumberOfSessions ( )
+int Track::getNumberOfSessions()
 {
-    return this->sessionsInTrack;
+    return this -> t;
 }
 
-Session Track::getSession ( int index )
+Session Track::getSession(int index)
 {
-    if ( index < this->sessionsInTrack )
-    {
-        return sessions[index];
-    }
-    else
-    {
-        cout << "Index out of bound - Track::getSession" << endl;
-        exit ( 0 );
-    }
+    return sessions[index];
 }
 
-void Track::setSession ( int index, Session session )
+void Track::setSession(int index, Session session)
 {
-    if ( index < this->sessionsInTrack  )
-    {
-        sessions[index] = session;
-    }
-    else
-    {
-        cout << "Index out of bound - Track::setSession" << endl;
-        exit ( 0 );
-    }
+    sessions[index] = session;
 }
