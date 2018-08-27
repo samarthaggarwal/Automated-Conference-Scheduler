@@ -36,8 +36,9 @@ void SessionOrganizer::organizePapers()
             }
         }
     }
-
-    cout << swapCostChange(0, 0, 1, 0, 1, 1) << endl;
+    cout << swapCostChange(1, 0, 1, 2, 1, 1) << endl;
+    conference -> setPaper(2, 1, 1, 5);
+    conference -> setPaper(1, 0, 1, 11);
 }
 
 void SessionOrganizer::readInInputFile(string filename)
@@ -155,11 +156,13 @@ double SessionOrganizer::swapCostChange(int trackIndex1, int sessionIndex1, int 
 
     for(int i = 0; i < k; i++)
         change += distance[paperId1][tempSession1.getPaper(i)] - distance[paperId1][tempSession2.getPaper(i)] + distance[paperId2][tempSession2.getPaper(i)] - distance[paperId2][tempSession1.getPaper(i)];
-    change += 2 * distance[paperId1][paperId2];
     change *= (c + 1);
 
-    if(trackIndex1 != trackIndex2)
+    if(trackIndex1 == trackIndex2)
+      change += (c + 1) * 2 * distance[paperId1][paperId2];
+    else
     {
+        change += 2 * distance[paperId1][paperId2];
         double extraChange = 0.0;
         for(int i = 0; i < p; i++)
         {
