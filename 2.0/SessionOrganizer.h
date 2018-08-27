@@ -31,7 +31,7 @@ private:
     int t;
     double c;
     double processingTime;
-    
+
     Conference *conference;
 
 public:
@@ -66,6 +66,8 @@ public:
      * @return the score.
      */
     double scoreOrganization();
+
+    double swapCostChange(int trackIndex1, int sessionIndex1, int paperIndex1, int trackIndex1, int sessionIndex1, int paperIndex1);
 
     void printSessionOrganiser(char *);
 };
