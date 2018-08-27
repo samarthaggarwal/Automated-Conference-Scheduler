@@ -63,6 +63,7 @@ void SessionOrganizer::organizePapers()
 
 }
 
+/*
 void SessionOrganizer::organizePapers()
 {
     int paperCounter = 0;
@@ -78,6 +79,7 @@ void SessionOrganizer::organizePapers()
         }
     }
 }
+*/
 
 void SessionOrganizer::readInInputFile(string filename)
 {
@@ -180,4 +182,37 @@ double SessionOrganizer::scoreOrganization()
 
     double score = score1 + c * score2;
     return score;
+}
+
+double SessionOrganizer::swapCostChange(int trackIndex1, int sessionIndex1, int paperIndex1, int trackIndex2, int sessionIndex2, int paperIndex2)
+{
+    track* tempTrack1 = conference.getTrack(trackIndex1);
+    track* tempTrack2 = conference.getTrack(trackIndex2);
+    session* tempSession1 = tempTrack1.getSession(sessionIndex1);
+    session* tempSession2 = tempTrack2.getSession(sessionIndex2);
+    int paperId1 = tempSession1.getPaper(papersIndex1);
+    int paperId2 = tempSession2.getPaper(papersIndex2);
+
+    double change = 0;
+
+    for(int i = 0; i < k; i++)
+        change += distance[paperId1][tempSession1.getPaper(i)] - distance[paperId1][tempSession2.getPaper(i)] + distance[paperId2][tempSession2.getPaper(i)] - distance[paperId2][tempSession1.getPaper(i)];
+    change += 2 * distance[paperId1][paperId2];
+    change *= (c + 1);
+
+    if(trackIndex1 != trackIndex2)
+    {
+        double extraChange = 0.0;
+        for(int i = 0; i < p; i++)
+        {
+            tempSession1 = tempTrack1.getSession(i);
+            tempSession2 = tempTrack2.getSession(i);
+            for(int j = 0; j < k; j++)
+                extraChange += distance[paperId2][tempSession1.getPaper(j)] + distance[paperId1][tempSession2.getPaper(j)] - distance[paperId1][tempSession1.getPaper(j)] - distance[paperId2][tempSession2.getPaper(j)];
+        }
+        extraChange *= c;
+        change += extraChange;
+    }
+
+    return change;
 }
