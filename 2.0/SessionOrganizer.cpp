@@ -40,11 +40,14 @@ void SessionOrganizer::organizePapers()
         }
     }
 
+    conference->setScore( scoreOrganization());
+
     // cout<<conference->getTrack(0).getSession(0).getPaper(1)<<endl;
     // cout<<conference->getTrack(0).getSession(1).getPaper(1)<<endl;
 
     // number of neighbours from which to select the next node
-    int numNeighbours = 10;
+    int numNeighbours = 15;
+    int numJumps = 1000;
 
     // to initialize random seed
     // srand(time(NULL));
@@ -57,33 +60,36 @@ void SessionOrganizer::organizePapers()
     double maxScoreChange;
     int maxScoreIndex;
 
-    for(int i=0;i<numNeighbours;i++){
 
-        exchangeIndices[i][0] = rand() % (conference -> gett()) ;
-        exchangeIndices[i][1] = rand() % (conference -> getp()) ;
-        exchangeIndices[i][2] = rand() % (conference -> getk()) ;
+    for(int j=0; j<numJumps ;j++){
+        for(int i=0;i<numNeighbours;i++){
 
-        exchangeIndices[i][3] = rand() % (conference -> gett()) ;
-        exchangeIndices[i][4] = rand() % (conference -> getp()) ;
-        exchangeIndices[i][5] = rand() % (conference -> getk()) ;
+            exchangeIndices[i][0] = rand() % (conference -> gett()) ;
+            exchangeIndices[i][1] = rand() % (conference -> getp()) ;
+            exchangeIndices[i][2] = rand() % (conference -> getk()) ;
 
-        scoreChange[i] = swapCostChange(exchangeIndices[i][0],exchangeIndices[i][1],exchangeIndices[i][2],exchangeIndices[i][3],exchangeIndices[i][4],exchangeIndices[i][5]);
-    }
+            exchangeIndices[i][3] = rand() % (conference -> gett()) ;
+            exchangeIndices[i][4] = rand() % (conference -> getp()) ;
+            exchangeIndices[i][5] = rand() % (conference -> getk()) ;
 
-    maxScoreChange = scoreChange[0];
-    maxScoreIndex = 0;
-    for(int i=1;i<numNeighbours; i++){
-        if(maxScoreChange<scoreChange[i]){
-            maxScoreChange = scoreChange[i];
-            maxScoreIndex = i;
+            scoreChange[i] = swapCostChange(exchangeIndices[i][0],exchangeIndices[i][1],exchangeIndices[i][2],exchangeIndices[i][3],exchangeIndices[i][4],exchangeIndices[i][5]);
         }
+
+        maxScoreChange = scoreChange[0];
+        maxScoreIndex = 0;
+        for(int i=1;i<numNeighbours; i++){
+            if(maxScoreChange<scoreChange[i]){
+                maxScoreChange = scoreChange[i];
+                maxScoreIndex = i;
+            }
+        }
+
+        int paperId1 = conference->getTrack(exchangeIndices[maxScoreIndex][0]).getSession(exchangeIndices[maxScoreIndex][1]).getPaper(exchangeIndices[maxScoreIndex][2]);
+        int paperId2 = conference->getTrack(exchangeIndices[maxScoreIndex][3]).getSession(exchangeIndices[maxScoreIndex][4]).getPaper(exchangeIndices[maxScoreIndex][5]);
+
+        conference -> setPaper(exchangeIndices[maxScoreIndex][0], exchangeIndices[maxScoreIndex][1], exchangeIndices[maxScoreIndex][2], paperId2);
+        conference -> setPaper(exchangeIndices[maxScoreIndex][3], exchangeIndices[maxScoreIndex][4], exchangeIndices[maxScoreIndex][5], paperId1);
     }
-
-    int paperId1 = conference->getTrack(exchangeIndices[maxScoreIndex][0]).getSession(exchangeIndices[maxScoreIndex][1]).getPaper(exchangeIndices[maxScoreIndex][2]);
-    int paperId2 = conference->getTrack(exchangeIndices[maxScoreIndex][3]).getSession(exchangeIndices[maxScoreIndex][4]).getPaper(exchangeIndices[maxScoreIndex][5]);
-
-    conference -> setPaper(exchangeIndices[maxScoreIndex][0], exchangeIndices[maxScoreIndex][1], exchangeIndices[maxScoreIndex][2], paperId2);
-    conference -> setPaper(exchangeIndices[maxScoreIndex][3], exchangeIndices[maxScoreIndex][4], exchangeIndices[maxScoreIndex][5], paperId1);
 }
 
 /*
