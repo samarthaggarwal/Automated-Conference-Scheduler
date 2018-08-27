@@ -25,7 +25,6 @@ SessionOrganizer::SessionOrganizer(string filename)
     conference = new Conference(t, p, k);
 }
 
-/*
 void SessionOrganizer::organizePapers()
 {
     int paperCounter = 0;
@@ -86,8 +85,8 @@ void SessionOrganizer::organizePapers()
     conference -> setPaper(exchangeIndices[maxScoreIndex][0], exchangeIndices[maxScoreIndex][1], exchangeIndices[maxScoreIndex][2], paperId2);
     conference -> setPaper(exchangeIndices[maxScoreIndex][3], exchangeIndices[maxScoreIndex][4], exchangeIndices[maxScoreIndex][5], paperId1);
 }
-*/
 
+/*
 void SessionOrganizer::organizePapers()
 {
     int paperCounter = 0;
@@ -106,7 +105,7 @@ void SessionOrganizer::organizePapers()
     conference -> setPaper(2, 1, 1, 5);
     conference -> setPaper(1, 0, 1, 11);
 }
-
+*/
 
 void SessionOrganizer::readInInputFile(string filename)
 {

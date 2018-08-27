@@ -10,6 +10,7 @@ Conference::Conference()
     this -> p = 0;
     this -> t = 0;
     this -> k = 0;
+    this -> score = 0;
 }
 
 Conference::Conference(int t, int p, int k)
@@ -17,6 +18,7 @@ Conference::Conference(int t, int p, int k)
     this -> t = t;
     this -> p = p;
     this -> k = k;
+    this -> score = 0;
     initTracks(t, p, k);
 }
 
@@ -48,6 +50,16 @@ int Conference::getp()
 int Conference::getk()
 {
     return k;
+}
+
+double Conference::getScore()
+{
+    return score;
+}
+
+void Conference::setScore(double newScore)
+{
+    this -> score = newScore;
 }
 
 Track Conference::getTrack(int index)
