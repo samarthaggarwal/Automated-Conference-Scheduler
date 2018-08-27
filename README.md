@@ -19,5 +19,8 @@ conference : (time slot)
 
 
 additions :
-    state - conference
-    evaluation function - for calculating value of the objective function for each state
+    state - conference - add field for score
+
+    SessionOrganizer - add function for change in cost function, neighbourhood Function, random initialization
+
+    

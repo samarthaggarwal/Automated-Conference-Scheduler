@@ -7,6 +7,9 @@
 #include "SessionOrganizer.h"
 #include "Util.h"
 
+#include <stdlib.h>
+#include <time.h>
+
 SessionOrganizer::SessionOrganizer()
 {
     p = 0;
@@ -21,6 +24,69 @@ SessionOrganizer::SessionOrganizer(string filename)
     readInInputFile(filename);
     conference = new Conference(t, p, k);
 }
+
+/*
+void SessionOrganizer::organizePapers()
+{
+    int paperCounter = 0;
+    for(int i = 0; i < conference -> gett(); i++)
+    {
+        for(int j = 0; j < conference -> getp(); j++)
+        {
+            for (int k = 0; k < conference -> getk(); k++)
+            {
+                conference -> setPaper(i, j, k, paperCounter);
+                paperCounter++;
+            }
+        }
+    }
+
+    // cout<<conference->getTrack(0).getSession(0).getPaper(1)<<endl;
+    // cout<<conference->getTrack(0).getSession(1).getPaper(1)<<endl;
+
+    // number of neighbours from which to select the next node
+    int numNeighbours = 10;
+
+    // to initialize random seed
+    // srand(time(NULL));
+    srand(2523);
+
+    int exchangeIndices[numNeighbours][6];
+    // order = trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2;
+
+    double *scoreChange = (double*) malloc(numNeighbours * sizeof(double));
+    double maxScoreChange;
+    int maxScoreIndex;
+
+    for(int i=0;i<numNeighbours;i++){
+
+        exchangeIndices[i][0] = rand() % (conference -> gett()) ;
+        exchangeIndices[i][1] = rand() % (conference -> getp()) ;
+        exchangeIndices[i][2] = rand() % (conference -> getk()) ;
+
+        exchangeIndices[i][3] = rand() % (conference -> gett()) ;
+        exchangeIndices[i][4] = rand() % (conference -> getp()) ;
+        exchangeIndices[i][5] = rand() % (conference -> getk()) ;
+
+        scoreChange[i] = swapCostChange(exchangeIndices[i][0],exchangeIndices[i][1],exchangeIndices[i][2],exchangeIndices[i][3],exchangeIndices[i][4],exchangeIndices[i][5]);
+    }
+
+    maxScoreChange = scoreChange[0];
+    maxScoreIndex = 0;
+    for(int i=1;i<numNeighbours; i++){
+        if(maxScoreChange<scoreChange[i]){
+            maxScoreChange = scoreChange[i];
+            maxScoreIndex = i;
+        }
+    }
+
+    int paperId1 = conference->getTrack(exchangeIndices[maxScoreIndex][0]).getSession(exchangeIndices[maxScoreIndex][1]).getPaper(exchangeIndices[maxScoreIndex][2]);
+    int paperId2 = conference->getTrack(exchangeIndices[maxScoreIndex][3]).getSession(exchangeIndices[maxScoreIndex][4]).getPaper(exchangeIndices[maxScoreIndex][5]);
+
+    conference -> setPaper(exchangeIndices[maxScoreIndex][0], exchangeIndices[maxScoreIndex][1], exchangeIndices[maxScoreIndex][2], paperId2);
+    conference -> setPaper(exchangeIndices[maxScoreIndex][3], exchangeIndices[maxScoreIndex][4], exchangeIndices[maxScoreIndex][5], paperId1);
+}
+*/
 
 void SessionOrganizer::organizePapers()
 {
@@ -40,6 +106,7 @@ void SessionOrganizer::organizePapers()
     conference -> setPaper(2, 1, 1, 5);
     conference -> setPaper(1, 0, 1, 11);
 }
+
 
 void SessionOrganizer::readInInputFile(string filename)
 {
@@ -154,8 +221,13 @@ double SessionOrganizer::swapCostChange(int trackIndex1, int sessionIndex1, int 
     int paperId2 = tempSession2.getPaper(paperIndex2);
     double change = 0;
 
-    for(int i = 0; i < k; i++)
+    for(int i = 0; i < k; i++){
         change += distance[paperId1][tempSession1.getPaper(i)] - distance[paperId1][tempSession2.getPaper(i)] + distance[paperId2][tempSession2.getPaper(i)] - distance[paperId2][tempSession1.getPaper(i)];
+<<<<<<< HEAD
+=======
+    }
+    change += 2 * distance[paperId1][paperId2];
+>>>>>>> 071883bb91a6cad99c083ce3e919a52672d5c3fd
     change *= (c + 1);
 
     if(trackIndex1 == trackIndex2)
