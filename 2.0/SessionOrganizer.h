@@ -63,6 +63,10 @@ public:
      */
     double scoreOrganization();
 
+    /*
+    * Calculates the change in score on a single swap
+    *
+    */
     double swapCostChange(int trackIndex1, int sessionIndex1, int paperIndex1, int trackIndex2, int sessionIndex2, int paperIndex2);
 
     void printSessionOrganiser(char *);

@@ -25,7 +25,7 @@ SessionOrganizer::SessionOrganizer(string filename)
     conference = new Conference(t, p, k);
 }
 
-/*
+
 void SessionOrganizer::organizePapers()
 {
     int paperCounter = 0;
@@ -40,6 +40,8 @@ void SessionOrganizer::organizePapers()
             }
         }
     }
+
+    conference->setScore( scoreOrganization() );
 
     // cout<<conference->getTrack(0).getSession(0).getPaper(1)<<endl;
     // cout<<conference->getTrack(0).getSession(1).getPaper(1)<<endl;
@@ -80,14 +82,18 @@ void SessionOrganizer::organizePapers()
         }
     }
 
+    // for changing the state
     int paperId1 = conference->getTrack(exchangeIndices[maxScoreIndex][0]).getSession(exchangeIndices[maxScoreIndex][1]).getPaper(exchangeIndices[maxScoreIndex][2]);
     int paperId2 = conference->getTrack(exchangeIndices[maxScoreIndex][3]).getSession(exchangeIndices[maxScoreIndex][4]).getPaper(exchangeIndices[maxScoreIndex][5]);
 
     conference -> setPaper(exchangeIndices[maxScoreIndex][0], exchangeIndices[maxScoreIndex][1], exchangeIndices[maxScoreIndex][2], paperId2);
     conference -> setPaper(exchangeIndices[maxScoreIndex][3], exchangeIndices[maxScoreIndex][4], exchangeIndices[maxScoreIndex][5], paperId1);
-}
-*/
 
+    conference->setScore( conference->getScore() + maxScoreChange);
+}
+
+
+/*
 void SessionOrganizer::organizePapers()
 {
     int paperCounter = 0;
@@ -105,7 +111,7 @@ void SessionOrganizer::organizePapers()
 
     cout << swapCostChange(0, 0, 1, 0, 1, 1) << endl;
 }
-
+*/
 
 void SessionOrganizer::readInInputFile(string filename)
 {

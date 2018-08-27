@@ -71,6 +71,16 @@ public:
     int getk();
 
     /*
+    * Gets the score of a conference
+    */
+    double getScore();
+
+    /*
+    * Sets the score of a conference
+    */
+    void setScore(double newScore);
+
+    /*
      * Gets the track at the specified index.
      * @param index is the index of the specified track.
      * @return the track
