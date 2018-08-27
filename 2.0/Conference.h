@@ -29,11 +29,7 @@ private:
     // The number of papers in a session.
     int k;
 
-<<<<<<< HEAD
     // cost of the current conference state
-=======
-    // cost of the current Conference state
->>>>>>> d7ffd80d7b96dfba22ab5208a2de898567dd52b7
     double score;
 
 public:
