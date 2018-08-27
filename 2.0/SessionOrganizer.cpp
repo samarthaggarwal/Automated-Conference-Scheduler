@@ -6,7 +6,7 @@
 
 #include "SessionOrganizer.h"
 #include "Util.h"
-
+#include <math.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -51,38 +51,47 @@ void SessionOrganizer::organizePapers()
 
     // to initialize random seed
     // srand(time(NULL));
-    srand(2523);
+    // srsand(2523);
 
     int exchangeIndices[numNeighbours][6];
     // order = trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2;
 
-    double *scoreChange = (double*) malloc(numNeighbours * sizeof(double));
+    double *scoreChange = (double*) malloc((numNeighbours) * sizeof(double));
     double maxScoreChange;
-    int maxScoreIndex;
+    int maxScoreIndex = 0;
+    int random;
+    double totalScoreChange = 0.0;
 
+    for(int j = 0; j < numJumps; j++)
+    {
+        for(int i = 0; i < numNeighbours; i++)
+        {
+            exchangeIndices[i][0] = rand() % (conference -> gett());
+            exchangeIndices[i][1] = rand() % (conference -> getp());
+            exchangeIndices[i][2] = rand() % (conference -> getk());
 
-    for(int j=0; j<numJumps ;j++){
-        for(int i=0;i<numNeighbours;i++){
+            exchangeIndices[i][3] = rand() % (conference -> gett());
+            exchangeIndices[i][4] = rand() % (conference -> getp());
+            exchangeIndices[i][5] = rand() % (conference -> getk());
 
-            exchangeIndices[i][0] = rand() % (conference -> gett()) ;
-            exchangeIndices[i][1] = rand() % (conference -> getp()) ;
-            exchangeIndices[i][2] = rand() % (conference -> getk()) ;
-
-            exchangeIndices[i][3] = rand() % (conference -> gett()) ;
-            exchangeIndices[i][4] = rand() % (conference -> getp()) ;
-            exchangeIndices[i][5] = rand() % (conference -> getk()) ;
-
-            scoreChange[i] = swapCostChange(exchangeIndices[i][0],exchangeIndices[i][1],exchangeIndices[i][2],exchangeIndices[i][3],exchangeIndices[i][4],exchangeIndices[i][5]);
+            scoreChange[i] = exp(swapCostChange(exchangeIndices[i][0], exchangeIndices[i][1], exchangeIndices[i][2], exchangeIndices[i][3], exchangeIndices[i][4], exchangeIndices[i][5]));
         }
 
-        maxScoreChange = scoreChange[0];
-        maxScoreIndex = 0;
-        for(int i=1;i<numNeighbours; i++){
-            if(maxScoreChange<scoreChange[i]){
-                maxScoreChange = scoreChange[i];
-                maxScoreIndex = i;
-            }
-        }
+        random = fabs(rand());
+        random = random - floor(random / totalScoreChange) * totalScoreChange;
+        cout << random << endl;
+        while(random > 0)
+            random -= scoreChange[maxScoreIndex++];
+        maxScoreIndex--;
+        // cout << maxScoreIndex << endl;
+        // maxScoreChange = scoreChange[0];
+        // maxScoreIndex = 0;
+        // for(int i = 1;i < numNeighbours; i++){
+        //     if(maxScoreChange<scoreChange[i]){
+        //         maxScoreChange = scoreChange[i];
+        //         maxScoreIndex = i;
+        //     }
+        // }
 
         int paperId1 = conference->getTrack(exchangeIndices[maxScoreIndex][0]).getSession(exchangeIndices[maxScoreIndex][1]).getPaper(exchangeIndices[maxScoreIndex][2]);
         int paperId2 = conference->getTrack(exchangeIndices[maxScoreIndex][3]).getSession(exchangeIndices[maxScoreIndex][4]).getPaper(exchangeIndices[maxScoreIndex][5]);
