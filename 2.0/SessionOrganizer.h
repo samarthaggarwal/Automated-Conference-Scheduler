@@ -26,9 +26,9 @@ class SessionOrganizer
 {
 private:
     double ** distance;
+    int t;
     int p;
     int k;
-    int t;
     double c;
     double processingTime;
 
@@ -51,10 +51,6 @@ public:
      */
     void organizePapers();
 
-    int getp(){
-      return t;
-    }
-
     /*
      * Get the distance matrix.
      * @return the distance matrix.
@@ -67,7 +63,7 @@ public:
      */
     double scoreOrganization();
 
-    double swapCostChange(int trackIndex1, int sessionIndex1, int paperIndex1, int trackIndex1, int sessionIndex1, int paperIndex1);
+    double swapCostChange(int trackIndex1, int sessionIndex1, int paperIndex1, int trackIndex2, int sessionIndex2, int paperIndex2);
 
     void printSessionOrganiser(char *);
 };

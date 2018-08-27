@@ -19,22 +19,25 @@ SessionOrganizer::SessionOrganizer()
 SessionOrganizer::SessionOrganizer(string filename)
 {
     readInInputFile(filename);
-    conference = new Conference(p, t, k);
+    conference = new Conference(t, p, k);
 }
 
 void SessionOrganizer::organizePapers()
 {
+    int paperCounter = 0;
     for(int i = 0; i < conference -> gett(); i++)
     {
         for(int j = 0; j < conference -> getp(); j++)
         {
-            for (int k = 0; k < conference -> getk(); k++ )
+            for (int k = 0; k < conference -> getk(); k++)
             {
-                conference -> setPaper(j, i, k, paperCounter);
+                conference -> setPaper(i, j, k, paperCounter);
                 paperCounter++;
             }
         }
     }
+
+    cout << swapCostChange(0, 0, 1, 0, 1, 1) << endl;
 }
 
 void SessionOrganizer::readInInputFile(string filename)
@@ -91,7 +94,7 @@ double SessionOrganizer::scoreOrganization()
 {
     // Sum of pairwise similarities per session.
     double score1 = 0.0;
-    for(int i = 0; i < conference -> getp(); i++)
+    for(int i = 0; i < conference -> gett(); i++)
     {
         Track tmpTrack = conference -> getTrack(i);
         for(int j = 0; j < tmpTrack.getNumberOfSessions(); j++)
@@ -111,7 +114,7 @@ double SessionOrganizer::scoreOrganization()
 
     // Sum of distances for competing papers.
     double score2 = 0.0;
-    for(int i = 0; i < conference -> getp(); i++ )
+    for(int i = 0; i < conference -> gett(); i++ )
     {
         Track tmpTrack1 = conference -> getTrack(i);
         for (int j = 0; j < tmpTrack1.getNumberOfSessions(); j++)
@@ -122,10 +125,10 @@ double SessionOrganizer::scoreOrganization()
                 int index1 = tmpSession1.getPaper(l);
 
                 // Get competing papers.
-                for(int m = i + 1; m < conference -> getp(); m++)
+                for(int m = j + 1; m < conference -> getp(); m++)
                 {
-                    Track tmpTrack2 = conference -> getTrack(m);
-                    Session tmpSession2 = tmpTrack2.getSession(j);
+                    // Track tmpTrack2 = conference -> getTrack(i);
+                    Session tmpSession2 = tmpTrack1.getSession(m);
                     for(int n = 0; n < tmpSession2.getNumberOfPapers(); n++)
                     {
                         int index2 = tmpSession2.getPaper(n);
@@ -142,13 +145,12 @@ double SessionOrganizer::scoreOrganization()
 
 double SessionOrganizer::swapCostChange(int trackIndex1, int sessionIndex1, int paperIndex1, int trackIndex2, int sessionIndex2, int paperIndex2)
 {
-    track* tempTrack1 = conference.getTrack(trackIndex1);
-    track* tempTrack2 = conference.getTrack(trackIndex2);
-    session* tempSession1 = tempTrack1.getSession(sessionIndex1);
-    session* tempSession2 = tempTrack2.getSession(sessionIndex2);
-    int paperId1 = tempSession1.getPaper(papersIndex1);
-    int paperId2 = tempSession2.getPaper(papersIndex2);
-
+    Track tempTrack1 = conference -> getTrack(trackIndex1);
+    Track tempTrack2 = conference -> getTrack(trackIndex2);
+    Session tempSession1 = tempTrack1.getSession(sessionIndex1);
+    Session tempSession2 = tempTrack2.getSession(sessionIndex2);
+    int paperId1 = tempSession1.getPaper(paperIndex1);
+    int paperId2 = tempSession2.getPaper(paperIndex2);
     double change = 0;
 
     for(int i = 0; i < k; i++)

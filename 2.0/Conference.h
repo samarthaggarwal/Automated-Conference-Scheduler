@@ -20,11 +20,11 @@ private:
     // The array of tracks.
     Track *tracks;
 
-    // The number of parallel tracks.
-    int p;
+    // The number of tracks.
+    int t;
 
     // The number of sessions in a track.
-    int t;
+    int p;
 
     // The number of papers in a session.
     int k;
@@ -38,23 +38,23 @@ public:
     /*
      * Constructor for Conference.
      *
-     * @param p is the number of parallel tracks.
-     * @param t is the number of sessions in a track.
+     * @param t is the number of tracks.
+     * @param p is the number of sessions in a track.
      * @param k is the number of papers in a session.
      */
-    Conference(int p, int t, int k);
+    Conference(int t, int p, int k);
 
     /*
      * Initialize the tracks.
-     * @param p is the number of parallel tracks.
-     * @param t is the number of sessions in a track.
+     * @param t is the number of tracks.
+     * @param p is the number of sessions in a track.
      * @param k is the number of papers in a session.
      */
-    void initTracks(int p, int t, int k);
+    void initTracks(int t, int p, int k);
 
     /*
-     * Gets the number of parallel tracks.
-     * @return the number of parallel tracks.
+     * Gets the number of tracks.
+     * @return the number of tracks.
      */
     int getp();
 
