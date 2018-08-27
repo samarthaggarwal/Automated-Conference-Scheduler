@@ -17,7 +17,7 @@ class Track {
 
 private:
     Session *sessions;
-    int t;
+    int p;
 
 public:
     Track();
@@ -26,7 +26,7 @@ public:
      * Constructor : Creates Track with given number of Sessions
      *
      */
-    Track(int t);
+    Track(int p);
 
     /*
      * Set the paper at the slot index to the specified paper id number.

@@ -8,13 +8,13 @@
 
 Track::Track()
 {
-    this -> t = 0;
+    this -> p = 0;
 }
 
-Track::Track ( int t )
+Track::Track(int p)
 {
-    this -> t = t;
-    sessions = (Session *)malloc(sizeof(Session) * t);
+    this -> p = p;
+    sessions = (Session *)malloc(sizeof(Session) * p);
 }
 
 void Track::setPaper(int sessionIndex, int paperIndex, int paperId)
@@ -25,7 +25,7 @@ void Track::setPaper(int sessionIndex, int paperIndex, int paperId)
 
 int Track::getNumberOfSessions()
 {
-    return this -> t;
+    return this -> p;
 }
 
 Session Track::getSession(int index)

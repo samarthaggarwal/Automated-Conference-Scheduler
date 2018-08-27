@@ -12,21 +12,21 @@ Conference::Conference()
     this -> k = 0;
 }
 
-Conference::Conference(int p, int t, int k)
+Conference::Conference(int t, int p, int k)
 {
-    this -> p = p;
     this -> t = t;
+    this -> p = p;
     this -> k = k;
-    initTracks(p, t, k);
+    initTracks(t, p, k);
 }
 
-void Conference::initTracks(int p, int t, int k)
+void Conference::initTracks(int t, int p, int k)
 {
-    tracks = (Track *)malloc(sizeof(Track) * p);
-    for(int i = 0; i < p; i++)
+    tracks = (Track *)malloc(sizeof(Track) * t);
+    for(int i = 0; i < t; i++)
     {
-        Track tempTrack(t);
-        for (int j = 0; j < t; j++)
+        Track tempTrack(p);
+        for (int j = 0; j < p; j++)
         {
             Session tempSession(k);
             tempTrack.setSession(j, tempSession);
@@ -35,14 +35,14 @@ void Conference::initTracks(int p, int t, int k)
     }
 }
 
-int Conference::getp()
-{
-    return p;
-}
-
 int Conference::gett()
 {
     return t;
+}
+
+int Conference::getp()
+{
+    return p;
 }
 
 int Conference::getk()
@@ -71,7 +71,7 @@ void Conference::printConference(char* filename)
         {
             for(int l = 0; l < k; l++)
             {
-                ofile << tracks[j].getSession(i).getPaper(l) << " ";
+                ofile << tracks[i].getSession(j).getPaper(l) << " ";
             }
             if(j != p - 1)
             {
