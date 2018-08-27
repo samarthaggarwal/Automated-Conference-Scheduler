@@ -1,104 +1,86 @@
-/* 
+/*
  * File:   Conference.cpp
  * Author: Kapil Thakkar
- * 
  */
 
 #include "Conference.h"
 
-Conference::Conference ( )
+Conference::Conference()
 {
-    this->parallelTracks = 0;
-    this->sessionsInTrack = 0;
-    this->papersInSession = 0;
+    this -> p = 0;
+    this -> t = 0;
+    this -> k = 0;
 }
 
-Conference::Conference ( int parallelTracks, int sessionsInTrack, int papersInSession )
+Conference::Conference(int p, int t, int k)
 {
-    this->parallelTracks = parallelTracks;
-    this->sessionsInTrack = sessionsInTrack;
-    this->papersInSession = papersInSession;
-    initTracks ( parallelTracks, sessionsInTrack, papersInSession );
+    this -> p = p;
+    this -> t = t;
+    this -> k = k;
+    initTracks(p, t, k);
 }
 
-void Conference::initTracks ( int parallelTracks, int sessionsInTrack, int papersInSession )
+void Conference::initTracks(int p, int t, int k)
 {
-    tracks = ( Track * ) malloc ( sizeof (Track ) * parallelTracks );
-    for ( int i = 0; i < parallelTracks; i++ )
+    tracks = (Track *)malloc(sizeof(Track) * p);
+    for(int i = 0; i < p; i++)
     {
-        Track tempTrack ( sessionsInTrack );
-        for ( int j = 0; j < sessionsInTrack; j++ )
+        Track tempTrack(t);
+        for (int j = 0; j < t; j++)
         {
-            Session tempSession ( papersInSession );
-            tempTrack.setSession ( j, tempSession );
+            Session tempSession(k);
+            tempTrack.setSession(j, tempSession);
         }
         tracks[i] = tempTrack;
     }
 }
 
-int Conference::getParallelTracks ( )
+int Conference::getp()
 {
-    return parallelTracks;
+    return p;
 }
 
-int Conference::getSessionsInTrack ( )
+int Conference::gett()
 {
-    return sessionsInTrack;
+    return t;
 }
 
-int Conference::getPapersInSession ( )
+int Conference::getk()
 {
-    return papersInSession;
+    return k;
 }
 
-Track Conference::getTrack ( int index )
+Track Conference::getTrack(int index)
 {
-    if ( index < parallelTracks )
-    {
-        return tracks[index];
-    }
-    else
-    {
-        cout << "Index out of bound - Conference::getTrack" << endl;
-        exit ( 0 );
-    }
+    return tracks[index];
 }
 
-void Conference::setPaper ( int trackIndex, int sessionIndex, int paperIndex, int paperId )
+void Conference::setPaper(int trackIndex, int sessionIndex, int paperIndex, int paperId)
 {
-    if ( this->parallelTracks > trackIndex )
-    {
-        Track curTrack = tracks[trackIndex];
-        curTrack.setPaper ( sessionIndex, paperIndex, paperId );
-    }
-    else
-    {
-        cout << "Index out of bound - Conference::setPaper" << endl;
-        exit ( 0 );
-    }
+    Track curTrack = tracks[trackIndex];
+    curTrack.setPaper(sessionIndex, paperIndex, paperId);
 }
 
-void Conference::printConference (char * filename )
+void Conference::printConference(char* filename)
 {
     ofstream ofile(filename);
 
-    for ( int i = 0; i < sessionsInTrack; i++ )
+    for(int i = 0; i < t; i++)
     {
-        for ( int j = 0; j < parallelTracks; j++ )
+        for(int j = 0; j < p; j++)
         {
-            for ( int k = 0; k < papersInSession; k++ )
+            for(int l = 0; l < k; l++)
             {
-                ofile<< tracks[j].getSession ( i ).getPaper ( k ) << " ";
+                ofile << tracks[j].getSession(i).getPaper(l) << " ";
             }
-            if ( j != parallelTracks - 1 )
+            if(j != p - 1)
             {
-                ofile<<"| ";
+                ofile << "| ";
             }
         }
-        ofile<<"\n";
+        ofile << "\n";
     }
     ofile.close();
-    cout<<"Organization written to ";
-    printf("%s :)\n",filename);
-
+    cout << "Organization written to ";
+    printf("%s :)\n", filename);
 }

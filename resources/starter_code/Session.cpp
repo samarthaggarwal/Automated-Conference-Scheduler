@@ -1,70 +1,52 @@
-/* 
+/*
  * File:   Session.cpp
  * Author: Kapil Thakkar
- * 
  */
 
 #include <errno.h>
 #include <vector>
-
 #include "Session.h"
 
-Session::Session ( )
+Session::Session()
 {
-    papersInSession = 0;
+    k = 0;
 }
 
-Session::Session ( int papersInSession )
+Session::Session(int k)
 {
-    this->papersInSession = papersInSession;
-    initPapers ( papersInSession );
+    this -> k = k;
+    initPapers(k);
 }
 
-void Session::initPapers ( int papersInSession )
+void Session::initPapers(int k)
 {
-    this->papers = ( int * ) malloc ( sizeof (int ) * papersInSession );
-    for ( int i = 0; i < papersInSession; i++ )
+    this -> papers = (int *)malloc(sizeof(int) * k);
+    for(int i = 0; i < k; i++)
     {
         papers[i] = -1;
     }
 }
 
-int Session::getNumberOfPapers ( )
+int Session::getNumberOfPapers()
 {
-    return papersInSession;
+    return k;
 }
 
-int Session::getPaper ( int index )
+int Session::getPaper(int index)
 {
-    if ( index < papersInSession )
-    {
-        return papers[index];
-    }
-    else
-    {
-        cout << "Index out of bound - Session::getPaper" << endl;
-        exit ( 0 );
-    }
+    return papers[index];
 }
 
-void Session::setPaper ( int index, int paperId )
+void Session::setPaper(int index, int paperId)
 {
-    if ( index < papersInSession )
-    {
-        papers[index] = paperId;
-    }
-    else
-    {
-        cout << "Index out of bound - Session::setPaper" << endl;
-        exit ( 0 );
-    }
+    papers[index] = paperId;
 }
 
-void Session::printSession ( )
+void Session::printSession()
 {
-    for ( int i = 0; i < papersInSession ; i++ )
+    for (int i = 0; i < k; i++)
     {
-        cout<<papers[i]<<" ";
+        cout << papers[i] << " ";
     }
-    cout<<endl;
+    cout << endl;
 }
