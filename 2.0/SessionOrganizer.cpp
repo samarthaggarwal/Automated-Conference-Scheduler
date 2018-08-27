@@ -46,12 +46,12 @@ void SessionOrganizer::organizePapers()
     // cout<<conference->getTrack(0).getSession(1).getPaper(1)<<endl;
 
     // number of neighbours from which to select the next node
-    int numNeighbours = 15;
-    int numJumps = 1000;
+    int numNeighbours = 30;
+    int numJumps = 5000;
 
     // to initialize random seed
     // srand(time(NULL));
-    srand(2523);
+    // srand(2523);
 
     int exchangeIndices[numNeighbours][6];
     // order = trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2;
@@ -68,9 +68,11 @@ void SessionOrganizer::organizePapers()
             exchangeIndices[i][1] = rand() % (conference -> getp()) ;
             exchangeIndices[i][2] = rand() % (conference -> getk()) ;
 
-            exchangeIndices[i][3] = rand() % (conference -> gett()) ;
-            exchangeIndices[i][4] = rand() % (conference -> getp()) ;
-            exchangeIndices[i][5] = rand() % (conference -> getk()) ;
+            do{
+                exchangeIndices[i][3] = rand() % (conference -> gett()) ;
+                exchangeIndices[i][4] = rand() % (conference -> getp()) ;
+                exchangeIndices[i][5] = rand() % (conference -> getk()) ;
+            }while(exchangeIndices[i][0]==exchangeIndices[i][3] && exchangeIndices[i][1]==exchangeIndices[i][4]);
 
             scoreChange[i] = swapCostChange(exchangeIndices[i][0],exchangeIndices[i][1],exchangeIndices[i][2],exchangeIndices[i][3],exchangeIndices[i][4],exchangeIndices[i][5]);
         }
