@@ -77,14 +77,19 @@ void SessionOrganizer::organizePapers()
             }while(exchangeIndices[i][0]==exchangeIndices[i][3] && exchangeIndices[i][1]==exchangeIndices[i][4]);
 
             scoreChange[i] = exp(swapCostChange(exchangeIndices[i][0], exchangeIndices[i][1], exchangeIndices[i][2], exchangeIndices[i][3], exchangeIndices[i][4], exchangeIndices[i][5]));
+            totalScoreChange += scoreChange[i];
         }
 
-        random = fabs(rand());
-        random = random - floor(random / totalScoreChange) * totalScoreChange;
+        // random = fabs(rand());
+        // random = random - floor(random / totalScoreChange) * totalScoreChange;
+        // totalScoreChange = ceil(totalScoreChange);
+        random = rand() % (int)floor(totalScoreChange+1);
         cout << random << endl;
         while(random > 0)
             random -= scoreChange[maxScoreIndex++];
-        maxScoreIndex--;
+        maxScoreIndex;
+
+        cout<<maxScoreIndex<<endl;
         // cout << maxScoreIndex << endl;
         // maxScoreChange = scoreChange[0];
         // maxScoreIndex = 0;

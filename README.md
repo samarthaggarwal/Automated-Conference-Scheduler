@@ -7,6 +7,7 @@ session : (set of papers going on parallely)
   int *papers;
   int numPapers;
 
+  
 track : (set of sessions happening in a single time slot)
     session *sessions;
     int numSessions;
