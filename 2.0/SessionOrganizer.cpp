@@ -27,11 +27,15 @@ SessionOrganizer::SessionOrganizer(string filename)
 
 void SessionOrganizer::organizePapers()
 {
+    // cout<<conference->getTrack(0).getSession(0).getPaper(1)<<endl;
+    // cout<<conference->getTrack(0).getSession(1).getPaper(1)<<endl;
+
     // number of neighbours from which to select the next node
     int numNeighbours = 10;
 
     // to initialize random seed
-    srand(time(NULL));
+    // srand(time(NULL));
+    srand(2523);
 
     int exchangeIndices[numNeighbours][6];
     // order = trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2;
@@ -40,18 +44,27 @@ void SessionOrganizer::organizePapers()
     double maxScoreChange;
     int maxScoreIndex;
 
+    cout<<"hi\n";
     for(int i=0;i<numNeighbours;i++){
+        // cout<<"i="<<i<<"\n";
+
         exchangeIndices[i][0] = rand() % (conference -> gett()) ;
         exchangeIndices[i][1] = rand() % (conference -> getp()) ;
         exchangeIndices[i][2] = rand() % (conference -> getk()) ;
+        // cout<<"i="<<i<<"\n";
 
         exchangeIndices[i][3] = rand() % (conference -> gett()) ;
         exchangeIndices[i][4] = rand() % (conference -> getp()) ;
         exchangeIndices[i][5] = rand() % (conference -> getk()) ;
 
-        double[i] = swapCostChange(exchangeIndices[i][0],exchangeIndices[i][1],exchangeIndices[i][2],exchangeIndices[i][3],exchangeIndices[i][4],exchangeIndices[i][5],);
+        cout<<"i="<<i<<"\n";
+        cout<<exchangeIndices[i][0]<<" "<<exchangeIndices[i][1]<<" "<<exchangeIndices[i][2]<<" "<<exchangeIndices[i][3]<<" "<<exchangeIndices[i][4]<<" "<<exchangeIndices[i][5]<<endl;
+        scoreChange[i] = swapCostChange(exchangeIndices[i][0],exchangeIndices[i][1],exchangeIndices[i][2],exchangeIndices[i][3],exchangeIndices[i][4],exchangeIndices[i][5]);
+        cout<<"i="<<i<<"\n";
+
     }
 
+    // cout<<"hi\n";
     maxScoreChange = scoreChange[0];
     maxScoreIndex = 0;
     for(int i=1;i<numNeighbours; i++){
@@ -63,6 +76,8 @@ void SessionOrganizer::organizePapers()
 
     int paperId1 = conference->getTrack(exchangeIndices[maxScoreIndex][0]).getSession(exchangeIndices[maxScoreIndex][1]).getPaper(exchangeIndices[maxScoreIndex][2]);
     int paperId2 = conference->getTrack(exchangeIndices[maxScoreIndex][3]).getSession(exchangeIndices[maxScoreIndex][4]).getPaper(exchangeIndices[maxScoreIndex][5]);
+
+    // cout<<paperId1<<" "<<paperId2<<endl;
     conference -> setPaper(exchangeIndices[maxScoreIndex][0], exchangeIndices[maxScoreIndex][1], exchangeIndices[maxScoreIndex][2], paperId2);
     conference -> setPaper(exchangeIndices[maxScoreIndex][3], exchangeIndices[maxScoreIndex][4], exchangeIndices[maxScoreIndex][5], paperId1);
 }
@@ -192,6 +207,9 @@ double SessionOrganizer::scoreOrganization()
 
 double SessionOrganizer::swapCostChange(int trackIndex1, int sessionIndex1, int paperIndex1, int trackIndex2, int sessionIndex2, int paperIndex2)
 {
+    // cout<<"entered swapCostChange\n";
+    // cout<<trackIndex1<<" "<<sessionIndex1<<" "<<paperIndex1<<" "<<trackIndex2<<" "<<sessionIndex2<<" "<<paperIndex2<<endl;
+
     Track tempTrack1 = conference -> getTrack(trackIndex1);
     Track tempTrack2 = conference -> getTrack(trackIndex2);
     Session tempSession1 = tempTrack1.getSession(sessionIndex1);
@@ -200,8 +218,18 @@ double SessionOrganizer::swapCostChange(int trackIndex1, int sessionIndex1, int 
     int paperId2 = tempSession2.getPaper(paperIndex2);
     double change = 0;
 
-    for(int i = 0; i < k; i++)
+    // cout<<"hi\n";
+    // cout<<paperId1<<" "<<paperId2<<endl;
+
+    for(int i = 0; i < k; i++){
+        // cout<<"inside for loop, i="<<i<<"\n";
+        // cout<<tempSession2.getPaper(i)<<endl;
+        // cout<<distance[paperId1][tempSession1.getPaper(i)]<<endl;
+        // cout<<distance[paperId1][tempSession2.getPaper(i)]<<endl;
+        // cout<<distance[paperId2][tempSession2.getPaper(i)]<<endl;
+        // cout<<distance[paperId2][tempSession1.getPaper(i)]<<endl;
         change += distance[paperId1][tempSession1.getPaper(i)] - distance[paperId1][tempSession2.getPaper(i)] + distance[paperId2][tempSession2.getPaper(i)] - distance[paperId2][tempSession1.getPaper(i)];
+    }
     change += 2 * distance[paperId1][paperId2];
     change *= (c + 1);
 
@@ -219,5 +247,6 @@ double SessionOrganizer::swapCostChange(int trackIndex1, int sessionIndex1, int 
         change += extraChange;
     }
 
+    // cout<<"leaving swapCostChange\n";
     return change;
 }
