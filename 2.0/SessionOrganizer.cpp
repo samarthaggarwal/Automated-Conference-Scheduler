@@ -7,6 +7,9 @@
 #include "SessionOrganizer.h"
 #include "Util.h"
 
+#include <stdlib.h>
+#include <time.h>
+
 SessionOrganizer::SessionOrganizer()
 {
     p = 0;
@@ -20,6 +23,44 @@ SessionOrganizer::SessionOrganizer(string filename)
 {
     readInInputFile(filename);
     conference = new Conference(p, t, k);
+}
+
+void SessionOrganizer::organizePapers()
+{
+    // number of neighbours from which to select the next node
+    int numNeighbours = 10;
+
+    // to initialize random seed
+    srand(time(NULL));
+
+    int exchangeIndices[numNeighbours][6];
+    // order = trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2;
+
+    double *scoreChange = (double*) malloc(numNeighbours * sizeof(double));
+    double maxScoreChange;
+    int maxScoreIndex;
+
+    for(int i=0;i<numNeighbours;i++){
+        exchangeIndices[i][0] = rand() % (conference -> gett()) ;
+        exchangeIndices[i][1] = rand() % (conference -> getp()) ;
+        exchangeIndices[i][2] = rand() % (conference -> getk()) ;
+
+        exchangeIndices[i][3] = rand() % (conference -> gett()) ;
+        exchangeIndices[i][4] = rand() % (conference -> getp()) ;
+        exchangeIndices[i][5] = rand() % (conference -> getk()) ;
+
+        double[i] = swapCostChange(exchangeIndices[i][0],exchangeIndices[i][1],exchangeIndices[i][2],exchangeIndices[i][3],exchangeIndices[i][4],exchangeIndices[i][5],);
+    }
+
+    maxScoreChange = scoreChange[0];
+    maxScoreIndex = 0;
+    for(int i=1;i<numNeighbours; i++){
+        if(maxScoreChange<scoreChange[i]){
+            maxScoreChange = scoreChange[i];
+            maxScoreIndex = i;
+        }
+    }
+
 }
 
 void SessionOrganizer::organizePapers()
