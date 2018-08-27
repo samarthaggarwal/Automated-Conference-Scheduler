@@ -221,13 +221,8 @@ double SessionOrganizer::swapCostChange(int trackIndex1, int sessionIndex1, int 
     int paperId2 = tempSession2.getPaper(paperIndex2);
     double change = 0;
 
-    for(int i = 0; i < k; i++){
+    for(int i = 0; i < k; i++)
         change += distance[paperId1][tempSession1.getPaper(i)] - distance[paperId1][tempSession2.getPaper(i)] + distance[paperId2][tempSession2.getPaper(i)] - distance[paperId2][tempSession1.getPaper(i)];
-<<<<<<< HEAD
-=======
-    }
-    change += 2 * distance[paperId1][paperId2];
->>>>>>> 071883bb91a6cad99c083ce3e919a52672d5c3fd
     change *= (c + 1);
 
     if(trackIndex1 == trackIndex2)
