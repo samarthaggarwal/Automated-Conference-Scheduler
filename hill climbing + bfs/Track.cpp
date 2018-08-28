@@ -17,6 +17,11 @@ Track::Track(int p)
     sessions = (Session *)malloc(sizeof(Session) * p);
 }
 
+// Track::~Track()
+// {
+//     free(sessions);
+// }
+
 void Track::setPaper(int sessionIndex, int paperIndex, int paperId)
 {
     Session curSession = sessions[sessionIndex];

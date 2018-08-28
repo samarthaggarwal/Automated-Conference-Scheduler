@@ -22,6 +22,11 @@ Conference::Conference(int t, int p, int k)
     initTracks(t, p, k);
 }
 
+Conference::~Conference()
+{
+    free(tracks);
+}
+
 void Conference::initTracks(int t, int p, int k)
 {
     tracks = (Track *)malloc(sizeof(Track) * t);
@@ -115,3 +120,8 @@ void Conference::printConferenceToConsole()
         cout<<endl;
     }
 }
+
+// bool operator<(const Conference* c1, const Conference* c2)
+// {
+//     return c1->getScore() < c2->getScore();
+// }

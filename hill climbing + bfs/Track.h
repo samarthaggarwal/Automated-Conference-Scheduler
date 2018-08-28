@@ -28,6 +28,8 @@ public:
      */
     Track(int p);
 
+    // ~Track();
+
     /*
      * Set the paper at the slot index to the specified paper id number.
      *

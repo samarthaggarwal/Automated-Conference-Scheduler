@@ -189,10 +189,10 @@ void SessionOrganizer::organizePapers(double timer)
     }
 }
 
-bool SessionOrganizer::operator<(Conference* c1, Conference* c2)
-{
-    return c1->getScore() < c2->getScore();
-}
+// bool Conference::operator<(Conference* c1, Conference* c2)
+// {
+//     return c1->getScore() < c2->getScore();
+// }
 
 void SessionOrganizer::bfs()
 {

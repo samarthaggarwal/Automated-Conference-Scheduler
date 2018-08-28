@@ -44,6 +44,8 @@ public:
      */
     Conference(int t, int p, int k);
 
+    ~Conference();
+
     /*
      * Initialize the tracks.
      * @param t is the number of tracks.
@@ -104,6 +106,8 @@ public:
 
     // prints conference to console
     void printConferenceToConsole();
+
+    // bool operator<(Conference* c1, Conference* c2);
 };
 
 #endif	/* CONFERENCE_H */

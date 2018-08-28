@@ -18,6 +18,11 @@ Session::Session(int k)
     initPapers(k);
 }
 
+// Session::~Session()
+// {
+//     free(papers);
+// }
+
 void Session::initPapers(int k)
 {
     this -> papers = (int *)malloc(sizeof(int) * k);
