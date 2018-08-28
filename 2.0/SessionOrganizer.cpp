@@ -49,10 +49,15 @@ void SessionOrganizer::randomInitialization()
     }
 
     conference->setScore( scoreOrganization() );
+
+    cout<<"randomly initialized new state\n";
+    conference->printConferenceToConsole();
+    cout<<"score = "<<conference->getScore()<<endl;
 }
 
 void SessionOrganizer::organizePapers()
 {
+/*
     int paperCounter = 0;
     for(int i = 0; i < conference -> gett(); i++)
     {
@@ -67,6 +72,12 @@ void SessionOrganizer::organizePapers()
     }
 
     conference->setScore( scoreOrganization());
+
+    cout<<"=========================ordered initialization of new state\n";
+    conference->printConferenceToConsole();
+    cout<<"score = "<<conference->getScore()<<endl;
+*/
+    randomInitialization();
 
     // number of neighbours from which to select the next node
     int numNeighbours = 30;
