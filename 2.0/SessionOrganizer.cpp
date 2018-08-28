@@ -25,6 +25,31 @@ SessionOrganizer::SessionOrganizer(string filename)
     conference = new Conference(t, p, k);
 }
 
+void SessionOrganizer::randomInitialization()
+{
+    int t = conference->gett();
+    int p = conference->getp();
+    int k = conference->getk();
+    int numPapers = t*p*k;
+
+    bool papersAssigned[numPapers] = {0};
+    int randPaper;
+
+    for(int i=0;i<t;i++){
+        for(int j=0;j<p;j++){
+            for(int l=0;l<k;l++){
+                randPaper = rand()%numPapers;
+                while(papersAssigned[randPaper]==true)
+                    randPaper = (randPaper + 1)%numPapers;
+
+                papersAssigned[randPaper] = true;
+                conference->setPaper(i,j,l,randPaper);
+            }
+        }
+    }
+
+}
+
 void SessionOrganizer::organizePapers()
 {
     int paperCounter = 0;
