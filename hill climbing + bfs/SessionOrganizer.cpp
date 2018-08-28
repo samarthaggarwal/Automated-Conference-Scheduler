@@ -1,15 +1,9 @@
-copyConference(conference, bestConference)/*
- * File:   SessionOrganizer.cpp
- * Author: Kapil Thakkar
- *
- */
-
 #include "SessionOrganizer.h"
 #include "Util.h"
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
-#include <priority_queue>
+#include <queue>
 #include <vector>
 
 SessionOrganizer::SessionOrganizer()
@@ -195,14 +189,14 @@ void SessionOrganizer::organizePapers(double timer)
     }
 }
 
-bool operator<(Conference* c1, Conference* c2)
+bool SessionOrganizer::operator<(Conference* c1, Conference* c2)
 {
     return c1->getScore() < c2->getScore();
 }
 
 void SessionOrganizer::bfs()
 {
-    priority_queue<Conference*, vector<Conference*>, LessThanByScore > frontier;
+    priority_queue<Conference*, vector<Conference*> > frontier;
     // branching factor
     int b = 5;
     frontier.push(conference);
@@ -210,8 +204,11 @@ void SessionOrganizer::bfs()
     int trackIndex1, trackIndex2, sessionIndex1, sessionIndex2, paperIndex1, paperIndex2, scoreChange, paperId1, paperId2;
 
     while(!frontier.empty()){
-        conference = frontier.front();
+        conference = frontier.top();
         frontier.pop();
+
+        if(conference->getScore() > bestConference->getScore())
+            copyConference(conference, bestConference);
 
         for(int i=0;i<b;i++){
             trackIndex1 = rand()%t;
@@ -235,10 +232,11 @@ void SessionOrganizer::bfs()
 
             tempConference->setScore( conference->getScore() + scoreChange );
 
-            queue.push(tempConference);
+            frontier.push(tempConference);
         }
-    }
 
+        delete(conference);
+    }
 
 }
 

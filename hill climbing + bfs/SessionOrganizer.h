@@ -60,6 +60,9 @@ public:
      */
     void organizePapers(double timer);
 
+    // Compares two conferences based on their score
+    // bool operator<(Conference* c1, Conference* c2);
+
     // breadth first search when stuck at local optima
     void bfs();
 
