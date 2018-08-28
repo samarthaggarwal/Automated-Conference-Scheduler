@@ -24,3 +24,6 @@ additions :
 - restart after improvement goes below threshold
 
 - for analysis - plot score vs time
+
+- enforced hill climbing
+- simulated enealing
