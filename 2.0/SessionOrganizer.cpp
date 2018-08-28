@@ -57,6 +57,7 @@ void SessionOrganizer::randomInitialization()
 
 void SessionOrganizer::organizePapers()
 {
+ // Orderly initialization
 /*
     int paperCounter = 0;
     for(int i = 0; i < conference -> gett(); i++)
@@ -77,11 +78,12 @@ void SessionOrganizer::organizePapers()
     conference->printConferenceToConsole();
     cout<<"score = "<<conference->getScore()<<endl;
 */
+    srand(time(NULL));
     randomInitialization();
 
     // number of neighbours from which to select the next node
     int numNeighbours = 30;
-    int numJumps = 5000;
+    int numJumps = 100;
 
     // to initialize random seed
     // srand(time(NULL));
@@ -144,6 +146,7 @@ void SessionOrganizer::organizePapers()
     }
 }
 
+// original organizePapers function given in sample code template
 /*
 void SessionOrganizer::organizePapers()
 {
