@@ -167,9 +167,10 @@ void SessionOrganizer::organizePapers(double timer)
         // maxScoreIndex = rand() % numNeighbours;
         // maxScoreChange = scoreChange[maxScoreIndex];
 
+        maxScoreChange = scoreChange[0];
         random = (rand() % 100) / 100.0;
         // transition to best neighbour
-        cout << "scorechange" << scoreChange[0] << endl;
+        cout << "T = " << T << endl;
         if(scoreChange[0] >= 0 || random <= exp(scoreChange[0] / T))
         {
             int paperId1 = conference->getTrack(exchangeIndices[maxScoreIndex][0]).getSession(exchangeIndices[maxScoreIndex][1]).getPaper(exchangeIndices[maxScoreIndex][2]);
