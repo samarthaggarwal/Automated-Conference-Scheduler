@@ -196,26 +196,31 @@ void SessionOrganizer::organizePapers(double timer)
 
 void SessionOrganizer::bfs()
 {
-    queue<Conference> frontier;
+    queue<Conference*> frontier;
     // branching factor
     int b = 5;
+    frontier.push(conference);
+    Conference* tempConference;
+    int trackIndex1, trackIndex2, sessionIndex1, sessionIndex2, paperIndex1, paperIndex2, scoreChange;
 
-    
-    for(int i = 0; i < numNeighbours; i++)
-    {
-        exchangeIndices[i][0] = rand() % (conference -> gett());
-        exchangeIndices[i][1] = rand() % (conference -> getp());
-        exchangeIndices[i][2] = rand() % (conference -> getk());
+    while(!frontier.empty()){
+        tempConference = frontier.front();
+        frontier.pop();
 
-        do
-        {
-            exchangeIndices[i][3] = rand() % (conference -> gett()) ;
-            exchangeIndices[i][4] = rand() % (conference -> getp()) ;
-            exchangeIndices[i][5] = rand() % (conference -> getk()) ;
-        } while(exchangeIndices[i][0] == exchangeIndices[i][3] && exchangeIndices[i][1] == exchangeIndices[i][4]);
+        for(int i=0;i<b;i++){
+            trackIndex1 = rand()%t;
+            sessionIndex1 = rand()%p;
+            paperIndex1 = rand()%k;
 
-        scoreChange[i] = swapCostChange(exchangeIndices[i][0], exchangeIndices[i][1], exchangeIndices[i][2], exchangeIndices[i][3], exchangeIndices[i][4], exchangeIndices[i][5]);
-        // totalScoreChange += scoreChange[i];
+            do{
+                trackIndex2 = rand()%t;
+                sessionIndex2 = rand()%p;
+                paperIndex2 = rand()%k;
+            }while(trackIndex1==trackIndex2 && sessionIndex1==sessionIndex2);
+
+            scoreChange = swapCostChange(trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2);
+
+        }
     }
 
 
