@@ -20,9 +20,9 @@ conference : (time slot)
 
 
 additions :
-- random initialization == done
-- restart after improvement goes below threshold
 - probabilistic move to bad neighbours
 - add timer - output soln near time limit
+- restart after improvement goes below threshold
+- store best state visited so far
 
 - for analysis - plot score vs time

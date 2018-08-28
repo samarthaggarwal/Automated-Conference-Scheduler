@@ -79,17 +79,16 @@ void SessionOrganizer::organizePapers()
     conference->printConferenceToConsole();
     cout<<"score = "<<conference->getScore()<<endl;
 */
+
+    // to initialize random seed
     srand(time(NULL));
+    // srand(2523);
     randomInitialization();
 
     // number of neighbours from which to select the next node
     int numNeighbours = 50;
     // number of iterations of improvement
     int numJumps = 10000;
-
-    // to initialize random seed
-    // srand(time(NULL));
-    // srand(2523);
 
     int exchangeIndices[numNeighbours][6];
     // order = trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2;
