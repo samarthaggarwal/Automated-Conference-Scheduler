@@ -8,3 +8,6 @@
 		# cat sampleoutputs/outputfile1.txt
 		./main sample_problems/test_mayank.txt sampleoutputs/test_mayank_output.txt
 		#cat sampleoutputs/outputfile1.txt
+
+clean:
+	rm main
