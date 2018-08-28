@@ -106,6 +106,8 @@ void SessionOrganizer::organizePapers(double timer)
     double maxScoreChange;
     int maxScoreIndex;
     double random;
+    int count=0;
+    int localOptimaMovesCount=1000;
 
     while(true)
     {
@@ -161,15 +163,9 @@ void SessionOrganizer::organizePapers(double timer)
                 maxScoreIndex = i;
             }
 
-        // maxScoreIndex = rand() % numNeighbours;
-        // maxScoreChange = scoreChange[maxScoreIndex];
-
-        // random = (rand() % 100) / 100.0;
-        // // transition to best neighbour
-        // // cout << "scorechange" << scoreChange[0] << endl;
-        // maxScoreChange = scoreChange[0];
         if(maxScoreChange >= 0)
         {
+            count=0;
             int paperId1 = conference->getTrack(exchangeIndices[maxScoreIndex][0]).getSession(exchangeIndices[maxScoreIndex][1]).getPaper(exchangeIndices[maxScoreIndex][2]);
             int paperId2 = conference->getTrack(exchangeIndices[maxScoreIndex][3]).getSession(exchangeIndices[maxScoreIndex][4]).getPaper(exchangeIndices[maxScoreIndex][5]);
 
@@ -180,35 +176,27 @@ void SessionOrganizer::organizePapers(double timer)
             cout << conference->getScore() << endl;
         }
 
+        count++;
+
         if(conference->getScore() > bestConference->getScore())
             updateBestConference();
+
+        if(count>=localOptimaMovesCount){
+            // stuck at local optima
+            // bfs();
+            cout<<"stuck at local optima\n";
+            break;
+        }
 
         if(((double)clock() - timer) / CLOCKS_PER_SEC > 60 * processingTime - 0.01)
             return;
     }
 }
 
-// original organizePapers function given in sample code template
-/*
-void SessionOrganizer::organizePapers()
-{
-    int paperCounter = 0;
-    for(int i = 0; i < conference -> gett(); i++)
-    {
-        for(int j = 0; j < conference -> getp(); j++)
-        {
-            for (int k = 0; k < conference -> getk(); k++)
-            {
-                conference -> setPaper(i, j, k, paperCounter);
-                paperCounter++;
-            }
-        }
-    }
-    cout << swapCostChange(1, 0, 1, 2, 1, 1) << endl;
-    conference -> setPaper(2, 1, 1, 5);
-    conference -> setPaper(1, 0, 1, 11);
-}
-*/
+// void bfs()
+// {
+//
+// }
 
 void SessionOrganizer::readInInputFile(string filename)
 {

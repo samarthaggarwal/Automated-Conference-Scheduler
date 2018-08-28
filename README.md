@@ -27,3 +27,6 @@ additions :
 
 - enforced hill climbing
 - simulated enealing
+
+
+maxima seen = 55978.9
