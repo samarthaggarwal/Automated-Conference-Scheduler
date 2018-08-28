@@ -47,6 +47,11 @@ public:
     void readInInputFile(string filename);
 
     /*
+    * Initializes the conference to a random state
+    */
+    void randomInitialization();
+
+    /*
      * Organize the papers according to some algorithm.
      */
     void organizePapers();

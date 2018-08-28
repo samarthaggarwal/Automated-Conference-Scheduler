@@ -48,6 +48,7 @@ void SessionOrganizer::randomInitialization()
         }
     }
 
+    conference->setScore( scoreOrganization() );
 }
 
 void SessionOrganizer::organizePapers()
@@ -66,9 +67,6 @@ void SessionOrganizer::organizePapers()
     }
 
     conference->setScore( scoreOrganization());
-
-    // cout<<conference->getTrack(0).getSession(0).getPaper(1)<<endl;
-    // cout<<conference->getTrack(0).getSession(1).getPaper(1)<<endl;
 
     // number of neighbours from which to select the next node
     int numNeighbours = 30;
@@ -108,22 +106,24 @@ void SessionOrganizer::organizePapers()
         // random = fabs(rand());
         // random = random - floor(random / totalScoreChange) * totalScoreChange;
         // totalScoreChange = ceil(totalScoreChange);
-        random = rand() % (int)floor(totalScoreChange+1);
-        cout << random << endl;
-        while(random > 0)
-            random -= scoreChange[maxScoreIndex++];
-        maxScoreIndex;
 
-        cout<<maxScoreIndex<<endl;
-        // cout << maxScoreIndex << endl;
-        // maxScoreChange = scoreChange[0];
-        // maxScoreIndex = 0;
-        // for(int i = 1;i < numNeighbours; i++){
-        //     if(maxScoreChange<scoreChange[i]){
-        //         maxScoreChange = scoreChange[i];
-        //         maxScoreIndex = i;
-        //     }
-        // }
+        // random = rand() % (int)floor(totalScoreChange+1);
+        // cout << random << endl;
+        // while(random > 0)
+        //     random -= scoreChange[maxScoreIndex++];
+        // maxScoreIndex;
+        //
+        // cout<<maxScoreIndex<<endl;
+
+
+        maxScoreChange = scoreChange[0];
+        maxScoreIndex = 0;
+        for(int i = 1;i < numNeighbours; i++){
+            if(maxScoreChange<scoreChange[i]){
+                maxScoreChange = scoreChange[i];
+                maxScoreIndex = i;
+            }
+        }
 
         int paperId1 = conference->getTrack(exchangeIndices[maxScoreIndex][0]).getSession(exchangeIndices[maxScoreIndex][1]).getPaper(exchangeIndices[maxScoreIndex][2]);
         int paperId2 = conference->getTrack(exchangeIndices[maxScoreIndex][3]).getSession(exchangeIndices[maxScoreIndex][4]).getPaper(exchangeIndices[maxScoreIndex][5]);
