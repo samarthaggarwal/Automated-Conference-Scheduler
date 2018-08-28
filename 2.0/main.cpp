@@ -18,7 +18,7 @@ int main(int argc, char** argv)
     SessionOrganizer *organizer  = new SessionOrganizer(inputfilename);
 
     // Organize the papers into tracks based on similarity.
-    organizer -> organizePapers();
+    organizer -> organizePapers((double)startTime);
     organizer -> printSessionOrganiser(argv[2]);
 
     // Score the organization against the gold standard.
