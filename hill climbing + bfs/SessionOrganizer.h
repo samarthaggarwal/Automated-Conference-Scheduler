@@ -47,8 +47,8 @@ public:
      */
     void readInInputFile(string filename);
 
-    // Updates bestConference to the current conference
-    void updateBestConference();
+    // Copies src Conference to dest conference
+    void copyConference(Conference *src, Conference *dest);
 
     /*
     * Initializes the conference to a random state

@@ -1,4 +1,4 @@
-/*
+copyConference(conference, bestConference)/*
  * File:   SessionOrganizer.cpp
  * Author: Kapil Thakkar
  *
@@ -9,7 +9,8 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
-#include <queue>
+#include <priority_queue>
+#include <vector>
 
 SessionOrganizer::SessionOrganizer()
 {
@@ -27,13 +28,13 @@ SessionOrganizer::SessionOrganizer(string filename)
     bestConference = new Conference(t, p, k);
 }
 
-void SessionOrganizer::updateBestConference()
+void SessionOrganizer::copyConference(Conference *src, Conference *dest)
 {
     for(int i=0;i<t;i++){
-        bestConference->setTrack(conference->getTrack(i) , i);
+        dest->setTrack(src->getTrack(i) , i);
     }
 
-    bestConference->setScore( conference->getScore() );
+    dest->setScore( src->getScore() );
 }
 
 void SessionOrganizer::randomInitialization()
@@ -61,7 +62,7 @@ void SessionOrganizer::randomInitialization()
 
     conference->setScore( scoreOrganization() );
 
-    updateBestConference();
+    copyConference(conference, bestConference);
     // printing the initialized state and score to console
     // cout<<"randomly initialized new state\n";
     // cout<<"score = "<<conference->getScore()<<endl;
@@ -69,7 +70,7 @@ void SessionOrganizer::randomInitialization()
 
 void SessionOrganizer::organizePapers(double timer)
 {
- // Orderly initialization
+  // Orderly initialization
 /*
     int paperCounter = 0;
     for(int i = 0; i < conference -> gett(); i++)
@@ -180,7 +181,7 @@ void SessionOrganizer::organizePapers(double timer)
         count++;
 
         if(conference->getScore() > bestConference->getScore())
-            updateBestConference();
+            copyConference(conference, bestConference);
 
         if(count>=localOptimaMovesCount){
             // stuck at local optima
@@ -194,17 +195,22 @@ void SessionOrganizer::organizePapers(double timer)
     }
 }
 
+bool operator<(Conference* c1, Conference* c2)
+{
+    return c1->getScore() < c2->getScore();
+}
+
 void SessionOrganizer::bfs()
 {
-    queue<Conference*> frontier;
+    priority_queue<Conference*, vector<Conference*>, LessThanByScore > frontier;
     // branching factor
     int b = 5;
     frontier.push(conference);
     Conference* tempConference;
-    int trackIndex1, trackIndex2, sessionIndex1, sessionIndex2, paperIndex1, paperIndex2, scoreChange;
+    int trackIndex1, trackIndex2, sessionIndex1, sessionIndex2, paperIndex1, paperIndex2, scoreChange, paperId1, paperId2;
 
     while(!frontier.empty()){
-        tempConference = frontier.front();
+        conference = frontier.front();
         frontier.pop();
 
         for(int i=0;i<b;i++){
@@ -220,6 +226,16 @@ void SessionOrganizer::bfs()
 
             scoreChange = swapCostChange(trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2);
 
+            tempConference = new Conference(t,p,k);
+            copyConference(conference, tempConference);
+            paperId1 = conference->getTrack(trackIndex1).getSession(sessionIndex1).getPaper(paperIndex1);
+            paperId2 = conference->getTrack(trackIndex2).getSession(sessionIndex2).getPaper(paperIndex2);
+            tempConference -> setPaper(trackIndex1, sessionIndex1, paperIndex1, paperId2);
+            tempConference -> setPaper(trackIndex2, sessionIndex2, paperIndex2, paperId1);
+
+            tempConference->setScore( conference->getScore() + scoreChange );
+
+            queue.push(tempConference);
         }
     }
 
