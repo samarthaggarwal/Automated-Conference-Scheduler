@@ -7,7 +7,7 @@ session : (set of papers going on parallely)
   int *papers;
   int numPapers;
 
-  
+
 track : (set of sessions happening in a single time slot)
     session *sessions;
     int numSessions;
@@ -20,8 +20,8 @@ conference : (time slot)
 
 
 additions :
-    state - conference - add field for score
+- probabilistic move to bad neighbours
+- random initialization
+- add timer, output soln near time limit
 
-    SessionOrganizer - add function for change in cost function, neighbourhood Function, random initialization
-
-    
+- test on Mayank's input
