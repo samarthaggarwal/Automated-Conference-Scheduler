@@ -67,6 +67,11 @@ Track Conference::getTrack(int index)
     return tracks[index];
 }
 
+void Conference::setTrack(Track track, int i)
+{
+    tracks[i]=track;
+}
+
 void Conference::setPaper(int trackIndex, int sessionIndex, int paperIndex, int paperId)
 {
     Track curTrack = tracks[trackIndex];

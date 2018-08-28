@@ -33,6 +33,7 @@ private:
     double processingTime;
 
     Conference *conference;
+    Conference *bestConference;
 
 public:
     SessionOrganizer();
@@ -45,6 +46,9 @@ public:
      * @return the similarity matrix.
      */
     void readInInputFile(string filename);
+
+    // Updates bestConference to the current conference
+    void updateBestConference();
 
     /*
     * Initializes the conference to a random state
@@ -67,6 +71,9 @@ public:
      * @return the score.
      */
     double scoreOrganization();
+
+    // Gets the score of best conference
+    double getBestScore();
 
     /*
     * Calculates the change in score on a single swap

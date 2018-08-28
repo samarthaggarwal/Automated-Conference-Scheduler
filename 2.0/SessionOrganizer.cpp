@@ -23,6 +23,16 @@ SessionOrganizer::SessionOrganizer(string filename)
 {
     readInInputFile(filename);
     conference = new Conference(t, p, k);
+    bestConference = new Conference(t, p, k);
+}
+
+void SessionOrganizer::updateBestConference()
+{
+    for(int i=0;i<t;i++){
+        bestConference->setTrack(conference->getTrack(i) , i);
+    }
+
+    bestConference->setScore( conference->getScore() );
 }
 
 void SessionOrganizer::randomInitialization()
@@ -50,6 +60,7 @@ void SessionOrganizer::randomInitialization()
 
     conference->setScore( scoreOrganization() );
 
+    updateBestConference();
     // printing the initialized state and score to console
     // cout<<"randomly initialized new state\n";
     // cout<<"score = "<<conference->getScore()<<endl;
@@ -182,8 +193,12 @@ void SessionOrganizer::organizePapers()
                 conference -> setPaper(exchangeIndices[maxScoreIndex][0], exchangeIndices[maxScoreIndex][1], exchangeIndices[maxScoreIndex][2], paperId2);
                 conference -> setPaper(exchangeIndices[maxScoreIndex][3], exchangeIndices[maxScoreIndex][4], exchangeIndices[maxScoreIndex][5], paperId1);
 
-                cout << scoreOrganization() << endl;
+                conference->setScore( conference->getScore() + maxScoreChange );
+                cout << conference->getScore() << endl;
             }
+
+            if(conference->getScore() > bestConference->getScore())
+                updateBestConference();
         }
     }
 }
@@ -257,7 +272,7 @@ double** SessionOrganizer::getdistance()
 
 void SessionOrganizer::printSessionOrganiser(char * filename)
 {
-    conference -> printConference(filename);
+    bestConference -> printConference(filename);
 }
 
 double SessionOrganizer::scoreOrganization()
@@ -311,6 +326,11 @@ double SessionOrganizer::scoreOrganization()
 
     double score = score1 + c * score2;
     return score;
+}
+
+double SessionOrganizer::getBestScore()
+{
+    return bestConference->getScore();
 }
 
 double SessionOrganizer::swapCostChange(int trackIndex1, int sessionIndex1, int paperIndex1, int trackIndex2, int sessionIndex2, int paperIndex2)

@@ -87,6 +87,9 @@ public:
      */
     Track getTrack(int index);
 
+    // Sets the track to the specified value
+    void setTrack(Track track, int i);
+
     /*
      * Sets the paper in the specified slot to the given paper id.
      * @param trackIndex is the track index.
