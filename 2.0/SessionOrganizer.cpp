@@ -91,7 +91,7 @@ void SessionOrganizer::organizePapers(double timer)
 */
 
     // to initialize random seed
-    //srand(time(NULL));
+    srand(time(NULL));
     // srand(2523);
     randomInitialization();
 
