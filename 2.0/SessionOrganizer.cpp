@@ -50,6 +50,7 @@ void SessionOrganizer::randomInitialization()
 
     conference->setScore( scoreOrganization() );
 
+    // printing the initialized state and score to console
     cout<<"randomly initialized new state\n";
     conference->printConferenceToConsole();
     cout<<"score = "<<conference->getScore()<<endl;
@@ -117,6 +118,7 @@ void SessionOrganizer::organizePapers()
             totalScoreChange += scoreChange[i];
         }
 
+        // probabilistic - movement to neighbour
         // random = fabs(rand());
         // random = random - floor(random / totalScoreChange) * totalScoreChange;
         // totalScoreChange = ceil(totalScoreChange);
@@ -129,7 +131,7 @@ void SessionOrganizer::organizePapers()
         //
         // cout<<maxScoreIndex<<endl;
 
-
+        // selecting the best neighbour - deterministic
         maxScoreChange = scoreChange[0];
         maxScoreIndex = 0;
         for(int i = 1;i < numNeighbours; i++){
@@ -139,6 +141,7 @@ void SessionOrganizer::organizePapers()
             }
         }
 
+        // transition to best neighbour
         int paperId1 = conference->getTrack(exchangeIndices[maxScoreIndex][0]).getSession(exchangeIndices[maxScoreIndex][1]).getPaper(exchangeIndices[maxScoreIndex][2]);
         int paperId2 = conference->getTrack(exchangeIndices[maxScoreIndex][3]).getSession(exchangeIndices[maxScoreIndex][4]).getPaper(exchangeIndices[maxScoreIndex][5]);
 
