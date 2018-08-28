@@ -96,3 +96,17 @@ void Conference::printConference(char* filename)
     cout << "Organization written to ";
     printf("%s :)\n", filename);
 }
+
+void Conference::printConferenceToConsole()
+{
+    for(int i=0;i<t;i++){
+        for(int j=0;j<p;j++){
+            for(int l=0;l<k;l++){
+                cout<<tracks[i].getSession(j).getPaper(l)<<" ";
+            }
+            if(j!=p-1)
+                cout<<"| ";
+        }
+        cout<<endl;
+    }
+}

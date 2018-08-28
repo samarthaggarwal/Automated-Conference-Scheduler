@@ -96,7 +96,11 @@ public:
      */
     void setPaper(int trackIndex, int sessionIndex, int paperIndex, int paperId);
 
+    // prints conference to file
     void printConference(char *);
+
+    // prints conference to console
+    void printConferenceToConsole();
 };
 
 #endif	/* CONFERENCE_H */
