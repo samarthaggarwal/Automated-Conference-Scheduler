@@ -96,7 +96,7 @@ void SessionOrganizer::organizePapers(double timer)
     randomInitialization();
 
     // number of neighbours from which to select the next node
-    int numNeighbours = 1;
+    int numNeighbours = 250;
 
     int exchangeIndices[numNeighbours][6];
     // order = trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2;
@@ -104,14 +104,11 @@ void SessionOrganizer::organizePapers(double timer)
     double *scoreChange = (double*) malloc((numNeighbours) * sizeof(double));
 
     double maxScoreChange;
-    int maxScoreIndex = 0;
+    int maxScoreIndex;
     double random;
-    // double totalScoreChange;
-    double T;
-    int itr = 1;
+
     while(true)
     {
-        T = 2000.0 / itr++;
         for(int i = 0; i < numNeighbours; i++)
         {
             exchangeIndices[i][0] = rand() % (conference -> gett());
@@ -156,22 +153,22 @@ void SessionOrganizer::organizePapers(double timer)
         //     }
         // }
 
-        // maxScoreChange = -INFINITY;
-        // for(int i = 0; i < numNeighbours; i++)
-        //     if(maxScoreChange < scoreChange[i])
-        //     {
-        //         maxScoreChange = scoreChange[i];
-        //         maxScoreIndex = i;
-        //     }
+        maxScoreChange = -INFINITY;
+        for(int i = 0; i < numNeighbours; i++)
+            if(maxScoreChange < scoreChange[i])
+            {
+                maxScoreChange = scoreChange[i];
+                maxScoreIndex = i;
+            }
 
         // maxScoreIndex = rand() % numNeighbours;
         // maxScoreChange = scoreChange[maxScoreIndex];
 
-        maxScoreChange = scoreChange[0];
-        random = (rand() % 100) / 100.0;
-        // transition to best neighbour
-        // cout << "T = " << T << endl;
-        if(scoreChange[0] >= 0 || random <= exp(scoreChange[0] / T))
+        // random = (rand() % 100) / 100.0;
+        // // transition to best neighbour
+        // // cout << "scorechange" << scoreChange[0] << endl;
+        // maxScoreChange = scoreChange[0];
+        if(maxScoreChange >= 0)
         {
             int paperId1 = conference->getTrack(exchangeIndices[maxScoreIndex][0]).getSession(exchangeIndices[maxScoreIndex][1]).getPaper(exchangeIndices[maxScoreIndex][2]);
             int paperId2 = conference->getTrack(exchangeIndices[maxScoreIndex][3]).getSession(exchangeIndices[maxScoreIndex][4]).getPaper(exchangeIndices[maxScoreIndex][5]);
