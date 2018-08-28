@@ -9,6 +9,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
+#include <queue>
 
 SessionOrganizer::SessionOrganizer()
 {
@@ -193,14 +194,31 @@ void SessionOrganizer::organizePapers(double timer)
     }
 }
 
-void bfs()
+void SessionOrganizer::bfs()
 {
     queue<Conference> frontier;
-    for(int i=0;i<t;i++){
-        for(int j=0;j<p;j++){
+    // branching factor
+    int b = 5;
 
-        }
+    
+    for(int i = 0; i < numNeighbours; i++)
+    {
+        exchangeIndices[i][0] = rand() % (conference -> gett());
+        exchangeIndices[i][1] = rand() % (conference -> getp());
+        exchangeIndices[i][2] = rand() % (conference -> getk());
+
+        do
+        {
+            exchangeIndices[i][3] = rand() % (conference -> gett()) ;
+            exchangeIndices[i][4] = rand() % (conference -> getp()) ;
+            exchangeIndices[i][5] = rand() % (conference -> getk()) ;
+        } while(exchangeIndices[i][0] == exchangeIndices[i][3] && exchangeIndices[i][1] == exchangeIndices[i][4]);
+
+        scoreChange[i] = swapCostChange(exchangeIndices[i][0], exchangeIndices[i][1], exchangeIndices[i][2], exchangeIndices[i][3], exchangeIndices[i][4], exchangeIndices[i][5]);
+        // totalScoreChange += scoreChange[i];
     }
+
+
 }
 
 void SessionOrganizer::readInInputFile(string filename)

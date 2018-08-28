@@ -60,6 +60,9 @@ public:
      */
     void organizePapers(double timer);
 
+    // breadth first search when stuck at local optima
+    void bfs();
+
     /*
      * Get the distance matrix.
      * @return the distance matrix.
