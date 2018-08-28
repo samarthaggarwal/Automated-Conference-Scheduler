@@ -6,3 +6,5 @@
 		cat sampleoutputs/outputfile1.txt
 		./main sample_problems/inputfile3.txt sampleoutputs/outputfile1.txt
 		cat sampleoutputs/outputfile1.txt
+		./main sample_problems/test_mayank.txt sampleoutputs/outputfile1.txt
+		cat sampleoutputs/outputfile1.txt

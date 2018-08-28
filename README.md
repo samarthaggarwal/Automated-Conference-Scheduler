@@ -20,8 +20,9 @@ conference : (time slot)
 
 
 additions :
+- random initialization == done
+- restart after improvement goes below threshold
 - probabilistic move to bad neighbours
-- random initialization
-- add timer, output soln near time limit
+- add timer - output soln near time limit
 
-- test on Mayank's input
+- for analysis - plot score vs time

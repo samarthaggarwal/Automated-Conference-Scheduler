@@ -82,8 +82,9 @@ void SessionOrganizer::organizePapers()
     randomInitialization();
 
     // number of neighbours from which to select the next node
-    int numNeighbours = 30;
-    int numJumps = 100;
+    int numNeighbours = 50;
+    // number of iterations of improvement
+    int numJumps = 10000;
 
     // to initialize random seed
     // srand(time(NULL));
