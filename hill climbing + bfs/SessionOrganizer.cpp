@@ -193,10 +193,15 @@ void SessionOrganizer::organizePapers(double timer)
     }
 }
 
-// void bfs()
-// {
-//
-// }
+void bfs()
+{
+    queue<Conference> frontier;
+    for(int i=0;i<t;i++){
+        for(int j=0;j<p;j++){
+
+        }
+    }
+}
 
 void SessionOrganizer::readInInputFile(string filename)
 {

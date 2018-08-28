@@ -29,4 +29,4 @@ additions :
 - simulated enealing
 
 
-maxima seen = 55978.9
+maxima seen = 56136
