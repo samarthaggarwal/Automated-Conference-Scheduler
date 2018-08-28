@@ -66,7 +66,7 @@ void SessionOrganizer::randomInitialization()
     // cout<<"score = "<<conference->getScore()<<endl;
 }
 
-void SessionOrganizer::organizePapers()
+void SessionOrganizer::organizePapers(double timer)
 {
  // Orderly initialization
 /*
@@ -93,113 +93,99 @@ void SessionOrganizer::organizePapers()
     // to initialize random seed
     //srand(time(NULL));
     // srand(2523);
-    // randomInitialization();
+    randomInitialization();
 
-    // number of restrarts
-    int numRestarts = 1;
     // number of neighbours from which to select the next node
     int numNeighbours = 200;
-    // number of iterations of improvement
-    int numJumps = 20000;
 
     int exchangeIndices[numNeighbours][6];
     // order = trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2;
 
     double *scoreChange = (double*) malloc((numNeighbours) * sizeof(double));
 
-    double maxScoreChange1;
-    int maxScoreIndex1;
-    double maxScoreChange2;
-    int maxScoreIndex2;
     double maxScoreChange;
     int maxScoreIndex;
     int random;
     double totalScoreChange;
 
-    for(int restart = 0; restart < numRestarts; restart++)
+    while(true)
     {
-        maxScoreIndex1 = 0;
-        maxScoreIndex2 = 0;
-        randomInitialization();
-        for(int j = 0; j < numJumps; j++)
+        for(int i = 0; i < numNeighbours; i++)
         {
-            for(int i = 0; i < numNeighbours; i++)
+            exchangeIndices[i][0] = rand() % (conference -> gett());
+            exchangeIndices[i][1] = rand() % (conference -> getp());
+            exchangeIndices[i][2] = rand() % (conference -> getk());
+
+            do
             {
-                exchangeIndices[i][0] = rand() % (conference -> gett());
-                exchangeIndices[i][1] = rand() % (conference -> getp());
-                exchangeIndices[i][2] = rand() % (conference -> getk());
+                exchangeIndices[i][3] = rand() % (conference -> gett()) ;
+                exchangeIndices[i][4] = rand() % (conference -> getp()) ;
+                exchangeIndices[i][5] = rand() % (conference -> getk()) ;
+            } while(exchangeIndices[i][0] == exchangeIndices[i][3] && exchangeIndices[i][1] == exchangeIndices[i][4]);
 
-                do
-                {
-                    exchangeIndices[i][3] = rand() % (conference -> gett()) ;
-                    exchangeIndices[i][4] = rand() % (conference -> getp()) ;
-                    exchangeIndices[i][5] = rand() % (conference -> getk()) ;
-                } while(exchangeIndices[i][0] == exchangeIndices[i][3] && exchangeIndices[i][1] == exchangeIndices[i][4]);
-
-                scoreChange[i] = swapCostChange(exchangeIndices[i][0], exchangeIndices[i][1], exchangeIndices[i][2], exchangeIndices[i][3], exchangeIndices[i][4], exchangeIndices[i][5]);
-                // totalScoreChange += scoreChange[i];
-            }
-
-            // probabilistic - movement to neighbour
-            // random = rand();
-            // random -= floor(random / totalScoreChange) * totalScoreChange;
-            // totalScoreChange = ceil(totalScoreChange);
-            // while(random > 0)
-            //     random -= scoreChange[maxScoreIndex++];
-            // maxScoreIndex = max(maxScoreIndex--, 0);
-            // selecting the best neighbour - deterministic
-
-            // maxScoreChange1 = -INFINITY;
-            // maxScoreChange2 = -INFINITY;
-            // for(int i = 0; i < numNeighbours; i++)
-            // {
-            //     if(maxScoreChange1 < scoreChange[i])
-            //     {
-            //         maxScoreChange2 = maxScoreChange1;
-            //         maxScoreChange1 = scoreChange[i];
-            //         maxScoreIndex2 = maxScoreIndex1;
-            //         maxScoreIndex1 = i;
-            //     }
-            //     else if(maxScoreChange2 < scoreChange[i])
-            //     {
-            //         maxScoreChange2 = scoreChange[i];
-            //         maxScoreIndex2 = i;
-            //     }
-            // }
-
-            random = rand() % 10;
-            if(random < 1)
-            {
-                maxScoreIndex = rand() % numNeighbours;
-                maxScoreChange = scoreChange[maxScoreIndex];
-            }
-            else
-            {
-                maxScoreChange = -INFINITY;
-                for(int i = 0; i < numNeighbours; i++)
-                    if(maxScoreChange < scoreChange[i])
-                    {
-                        maxScoreChange = scoreChange[i];
-                        maxScoreIndex = i;
-                    }
-            }
-
-            // transition to best neighbour
-            if(maxScoreChange > 0)
-            {
-                int paperId1 = conference->getTrack(exchangeIndices[maxScoreIndex][0]).getSession(exchangeIndices[maxScoreIndex][1]).getPaper(exchangeIndices[maxScoreIndex][2]);
-                int paperId2 = conference->getTrack(exchangeIndices[maxScoreIndex][3]).getSession(exchangeIndices[maxScoreIndex][4]).getPaper(exchangeIndices[maxScoreIndex][5]);
-
-                conference -> setPaper(exchangeIndices[maxScoreIndex][0], exchangeIndices[maxScoreIndex][1], exchangeIndices[maxScoreIndex][2], paperId2);
-                conference -> setPaper(exchangeIndices[maxScoreIndex][3], exchangeIndices[maxScoreIndex][4], exchangeIndices[maxScoreIndex][5], paperId1);
-
-                conference->setScore( conference->getScore() + maxScoreChange );
-                cout << conference->getScore() << endl;
-            }
-
-            if(conference->getScore() > bestConference->getScore())
-                updateBestConference();
+            scoreChange[i] = swapCostChange(exchangeIndices[i][0], exchangeIndices[i][1], exchangeIndices[i][2], exchangeIndices[i][3], exchangeIndices[i][4], exchangeIndices[i][5]);
+            // totalScoreChange += scoreChange[i];
         }
+
+        // probabilistic - movement to neighbour
+        // random = rand();
+        // random -= floor(random / totalScoreChange) * totalScoreChange;
+        // totalScoreChange = ceil(totalScoreChange);
+        // while(random > 0)
+        //     random -= scoreChange[maxScoreIndex++];
+        // maxScoreIndex = max(maxScoreIndex--, 0);
+        // selecting the best neighbour - deterministic
+
+        // maxScoreChange1 = -INFINITY;
+        // maxScoreChange2 = -INFINITY;
+        // for(int i = 0; i < numNeighbours; i++)
+        // {
+        //     if(maxScoreChange1 < scoreChange[i])
+        //     {
+        //         maxScoreChange2 = maxScoreChange1;
+        //         maxScoreChange1 = scoreChange[i];
+        //         maxScoreIndex2 = maxScoreIndex1;
+        //         maxScoreIndex1 = i;
+        //     }
+        //     else if(maxScoreChange2 < scoreChange[i])
+        //     {
+        //         maxScoreChange2 = scoreChange[i];
+        //         maxScoreIndex2 = i;
+        //     }
+        // }
+
+        maxScoreChange = -INFINITY;
+        for(int i = 0; i < numNeighbours; i++)
+            if(maxScoreChange < scoreChange[i])
+            {
+                maxScoreChange = scoreChange[i];
+                maxScoreIndex = i;
+            }
+
+        if(maxScoreChange < 0)
+        {
+            maxScoreIndex = rand() % numNeighbours;
+            maxScoreChange = scoreChange[maxScoreIndex];
+        }
+
+        // transition to best neighbour
+        if(maxScoreChange >= 0)
+        {
+            int paperId1 = conference->getTrack(exchangeIndices[maxScoreIndex][0]).getSession(exchangeIndices[maxScoreIndex][1]).getPaper(exchangeIndices[maxScoreIndex][2]);
+            int paperId2 = conference->getTrack(exchangeIndices[maxScoreIndex][3]).getSession(exchangeIndices[maxScoreIndex][4]).getPaper(exchangeIndices[maxScoreIndex][5]);
+
+            conference -> setPaper(exchangeIndices[maxScoreIndex][0], exchangeIndices[maxScoreIndex][1], exchangeIndices[maxScoreIndex][2], paperId2);
+            conference -> setPaper(exchangeIndices[maxScoreIndex][3], exchangeIndices[maxScoreIndex][4], exchangeIndices[maxScoreIndex][5], paperId1);
+
+            conference->setScore( conference->getScore() + maxScoreChange );
+            cout << conference->getScore() << endl;
+        }
+
+        if(conference->getScore() > bestConference->getScore())
+            updateBestConference();
+
+        if(((double)clock() - timer) / CLOCKS_PER_SEC > 60 * processingTime - 0.01)
+            return;
     }
 }
 

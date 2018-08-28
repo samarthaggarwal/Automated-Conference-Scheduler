@@ -58,7 +58,7 @@ public:
     /*
      * Organize the papers according to some algorithm.
      */
-    void organizePapers();
+    void organizePapers(double timer);
 
     /*
      * Get the distance matrix.
