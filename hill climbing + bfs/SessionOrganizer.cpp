@@ -169,6 +169,7 @@ void SessionOrganizer::organizePapers(double timer)
             conference -> setPaper(exchangeIndices[maxScoreIndex][3], exchangeIndices[maxScoreIndex][4], exchangeIndices[maxScoreIndex][5], paperId1);
 
             conference->setScore( conference->getScore() + maxScoreChange );
+            // printing new score to console when state changes
             cout << conference->getScore() << endl;
         }
 
@@ -180,15 +181,14 @@ void SessionOrganizer::organizePapers(double timer)
         if(count>=localOptimaMovesCount){
             // stuck at local optima
             // bfs();
-            cout<<"stuck at local optima\n";
+            cout<<"stuck at local optima at time = "<<((double)clock() - timer) / CLOCKS_PER_SEC<<"\n";
+            bfs(timer);
             break;
         }
 
         if(((double)clock() - timer) / CLOCKS_PER_SEC > 60 * processingTime - 0.01)
             return;
     }
-
-    // delete(conference);
 }
 
 // bool Conference::operator<(Conference* c1, Conference* c2)
@@ -196,7 +196,7 @@ void SessionOrganizer::organizePapers(double timer)
 //     return c1->getScore() < c2->getScore();
 // }
 
-void SessionOrganizer::bfs()
+void SessionOrganizer::bfs(double timer)
 {
     priority_queue<Conference*, vector<Conference*> > frontier;
     // branching factor
@@ -205,6 +205,7 @@ void SessionOrganizer::bfs()
     Conference* tempConference;
     int trackIndex1, trackIndex2, sessionIndex1, sessionIndex2, paperIndex1, paperIndex2, scoreChange, paperId1, paperId2;
 
+    int iter = 10;
     while(!frontier.empty()){
         conference = frontier.top();
         frontier.pop();
@@ -238,7 +239,9 @@ void SessionOrganizer::bfs()
         }
 
         delete(conference);
-        // CONTINUE FROM HERE
+
+        if(((double)clock() - timer) / CLOCKS_PER_SEC > 60 * processingTime - 0.01)
+            return;
     }
 
 }

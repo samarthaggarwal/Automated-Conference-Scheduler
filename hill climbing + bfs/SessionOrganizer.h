@@ -64,7 +64,7 @@ public:
     // bool operator<(Conference* c1, Conference* c2);
 
     // breadth first search when stuck at local optima
-    void bfs();
+    void bfs(double timer);
 
     /*
      * Get the distance matrix.
