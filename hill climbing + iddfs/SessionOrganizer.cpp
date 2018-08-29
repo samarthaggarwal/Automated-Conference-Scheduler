@@ -185,9 +185,14 @@ void SessionOrganizer::organizePapers(double timer)
             // stuck at local optima
             cout<<"stuck at local optima at time = "<<((double)clock() - timer) / CLOCKS_PER_SEC<<"\n";
             cout<<"before iddfs, best score obtained = "<<bestConference->getScore()<<endl;
+            bestConference->printConferenceToConsole();
             iddfs(timer);
             cout<<"from iddfs, best score obtained = "<<bestConference->getScore()<<endl;
+            bestConference->printConferenceToConsole();
+            copyConference(bestConference, conference);
+            cout<<"for best conf, score = "<<scoreOrganization()<<endl;
             // break;
+            count=0;
         }
 
         if(((double)clock() - timer) / CLOCKS_PER_SEC > 60 * processingTime - 0.01)
@@ -210,21 +215,21 @@ void SessionOrganizer::iddfs(double timer)
     Conference* tempConference;
     Conference* originalConference = new Conference(t,p,k);
     copyConference(conference, originalConference);
-    int trackIndex1, trackIndex2, sessionIndex1, sessionIndex2, paperIndex1, paperIndex2, scoreChange, paperId1, paperId2;
+    int trackIndex1, trackIndex2, sessionIndex1, sessionIndex2, paperIndex1, paperIndex2, paperId1, paperId2;
+    double scoreChange;
     pair<Conference*,int> node, tempnode;
     // rootnode.first = conference;
     // rootnode.second = 0;
 
-    cout<<"printing original conference before iddfs\n";
-    conference->printConferenceToConsole();
+    // cout<<"printing original conference before iddfs\n";
+    // conference->printConferenceToConsole();
 
     // limit for depth
     int depth = 2;
     while(true){
-        // cout<<"hi\n";
-        // originalConference->printConferenceToConsole();
+        conference = new Conference(t,p,k);
         copyConference(originalConference, conference);
-        conference -> printConferenceToConsole();
+        // conference -> printConferenceToConsole();
         node.first = conference;
         node.second = 0;
 
@@ -255,18 +260,7 @@ void SessionOrganizer::iddfs(double timer)
                         paperIndex2 = rand()%k;
                     }while(trackIndex1==trackIndex2 && sessionIndex1==sessionIndex2);
 
-                    // cout<<trackIndex1<<" "<<sessionIndex1<<" "<<paperIndex1<<" "<<trackIndex2<<" "<<sessionIndex2<<" "<<paperIndex2<<endl;
-                    // cout<<"t = "<<conference -> gett()<<endl;
-                    // cout<<"p ="<<conference -> getp()<<endl;
-                    // conference -> getTrack(trackIndex1).getSession(0);
-                    // cout<<"hi\n";
-                    // cout<<"k = "<<conference -> getTrack(trackIndex1).getSession(0).getNumberOfPapers()<<endl;
-                    // cout<<"p by getNumberOfSessions ="<<conference -> getTrack(trackIndex1).getNumberOfSessions()<<endl;
-                    // conference->printConferenceToConsole();
-
                     scoreChange = swapCostChange(trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2);
-
-                    // cout<<"p in caller="<<conference -> getTrack(trackIndex1).getNumberOfSessions()<<endl;
 
                     tempConference = new Conference(t,p,k);
                     copyConference(conference, tempConference);
@@ -276,6 +270,15 @@ void SessionOrganizer::iddfs(double timer)
                     tempConference -> setPaper(trackIndex2, sessionIndex2, paperIndex2, paperId1);
 
                     tempConference->setScore( conference->getScore() + scoreChange );
+                    // if(scoreConference(tempConference) - scoreConference(conference) >0.1){
+                        // cout<<"ALARM "<<scoreConference(tempConference) - scoreConference(conference)<<endl;
+                        // conference->printConferenceToConsole();
+                        // cout<<scoreConference(conference)<<" "<<conference->getScore()<<endl;
+                        // tempConference->printConferenceToConsole();
+                        // cout<<scoreConference(tempConference)<<" "<<tempConference->getScore()<<endl;
+                        // cout<<"scoreChange = "<<scoreChange<<endl;
+                        // return;
+                    // }
 
                     tempnode.first = tempConference;
                     tempnode.second = node.second + 1;
@@ -286,9 +289,10 @@ void SessionOrganizer::iddfs(double timer)
                 }
             }
 
-            if(conference->getScore() <= bestConference->getScore() && frontier.size()>0)
+            if(conference->getScore() <= bestConference->getScore() )
                 delete(conference);
             else{
+                cout<<"inside iddfs, copying conf to best\nconf score = "<<conference->getScore()<<"\tbest score = "<<bestConference->getScore()<<endl;
                 copyConference(conference, bestConference);
                 // cout<<2<<endl;
                 // cout<<"ended iddfs on score = ";
@@ -299,7 +303,7 @@ void SessionOrganizer::iddfs(double timer)
         }
 
         depth++;
-        cout<<"\n\n\n\n\n\n\ndepth = "<<depth<<endl;
+        cout<<"\n\ndepth = "<<depth<<endl;
         // cout<<frontier.size()<<endl;
     }
 
@@ -404,6 +408,59 @@ double SessionOrganizer::scoreOrganization()
 
                 // Get competing papers.
                 for(int m = j + 1; m < conference -> getp(); m++)
+                {
+                    // Track tmpTrack2 = conference -> getTrack(i);
+                    Session tmpSession2 = tmpTrack1.getSession(m);
+                    for(int n = 0; n < tmpSession2.getNumberOfPapers(); n++)
+                    {
+                        int index2 = tmpSession2.getPaper(n);
+                        score2 += distance[index1][index2];
+                    }
+                }
+            }
+        }
+    }
+
+    double score = score1 + c * score2;
+    return score;
+}
+
+double SessionOrganizer::scoreConference(Conference* conf)
+{
+    // Sum of pairwise similarities per session.
+    double score1 = 0.0;
+    for(int i = 0; i < conf -> gett(); i++)
+    {
+        Track tmpTrack = conf -> getTrack(i);
+        for(int j = 0; j < tmpTrack.getNumberOfSessions(); j++)
+        {
+            Session tmpSession = tmpTrack.getSession(j);
+            for(int l = 0; l < tmpSession.getNumberOfPapers(); l++)
+            {
+                int index1 = tmpSession.getPaper(l);
+                for(int m = l + 1; m < tmpSession.getNumberOfPapers(); m++)
+                {
+                    int index2 = tmpSession.getPaper(m);
+                    score1 += 1 - distance[index1][index2];
+                }
+            }
+        }
+    }
+
+    // Sum of distances for competing papers.
+    double score2 = 0.0;
+    for(int i = 0; i < conf -> gett(); i++ )
+    {
+        Track tmpTrack1 = conf -> getTrack(i);
+        for (int j = 0; j < tmpTrack1.getNumberOfSessions(); j++)
+        {
+            Session tmpSession1 = tmpTrack1.getSession(j);
+            for(int l = 0; l < tmpSession1.getNumberOfPapers(); l++)
+            {
+                int index1 = tmpSession1.getPaper(l);
+
+                // Get competing papers.
+                for(int m = j + 1; m < conf -> getp(); m++)
                 {
                     // Track tmpTrack2 = conference -> getTrack(i);
                     Session tmpSession2 = tmpTrack1.getSession(m);

@@ -78,6 +78,9 @@ public:
      */
     double scoreOrganization();
 
+    // scores the conference in parameter
+    double scoreConference(Conference* conf);
+
     // Gets the score of best conference
     double getBestScore();
 
