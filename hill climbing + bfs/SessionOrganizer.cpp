@@ -24,9 +24,10 @@ SessionOrganizer::SessionOrganizer(string filename)
 
 void SessionOrganizer::copyConference(Conference *src, Conference *dest)
 {
-    for(int i=0;i<t;i++){
-        dest->setTrack(src->getTrack(i) , i);
-    }
+  for(int i = 0; i < t; i++)
+      for(int j = 0; j < p; j++)
+          for(int l = 0;l < k; l++)
+              dest -> setPaper(i, j, l, src -> getTrack(i).getSession(j).getPaper(l));
 
     dest->setScore( src->getScore() );
 }
@@ -198,22 +199,26 @@ void SessionOrganizer::organizePapers(double timer)
 
 void SessionOrganizer::bfs(double timer)
 {
-    priority_queue<Conference*, vector<Conference*> > frontier;
+    // priority_queue<Conference*, vector<Conference*> > frontier;
+    queue<Conference*> frontier;
     // branching factor
     int b = 5;
     frontier.push(conference);
     Conference* tempConference;
     int trackIndex1, trackIndex2, sessionIndex1, sessionIndex2, paperIndex1, paperIndex2, scoreChange, paperId1, paperId2;
 
-    int iter = 10;
-    while(!frontier.empty()){
-        conference = frontier.top();
+    while(true){
+        cout<<conference->getScore()<<endl;
+        // getchar();
+
+        // conference = frontier.top();
+        conference = frontier.front();
         frontier.pop();
 
-        if(conference->getScore() > bestConference->getScore()){
-            copyConference(conference, bestConference);
-            cout<<bestConference->getScore()<<endl;
-        }
+        // if(conference->getScore() > bestConference->getScore()){
+        //     copyConference(conference, bestConference);
+        //     cout<<bestConference->getScore()<<endl;
+        // }
 
         for(int i=0;i<b;i++){
             trackIndex1 = rand()%t;
@@ -240,12 +245,28 @@ void SessionOrganizer::bfs(double timer)
             frontier.push(tempConference);
         }
 
-        delete(conference);
+        if(conference->getScore() <= bestConference->getScore())
+            delete(conference);
+        else
+            break;
 
         if(((double)clock() - timer) / CLOCKS_PER_SEC > 60 * processingTime - 0.01)
             return;
     }
 
+    // DELETE ALL FRONTIER ELEMENTS
+    cout<<"hi\n";
+
+    if(conference->getScore() > bestConference->getScore()){
+        cout<<1<<endl;
+        copyConference(conference, bestConference);
+        cout<<2<<endl;
+        cout<<"ended bfs on score = ";
+        cout<<bestConference->getScore()<<endl;
+        bestConference->printConferenceToConsole();
+    }
+
+    cout<<"hi2\n";
 }
 
 void SessionOrganizer::readInInputFile(string filename)
