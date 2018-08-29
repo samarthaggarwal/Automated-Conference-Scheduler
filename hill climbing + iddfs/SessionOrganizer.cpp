@@ -3,8 +3,10 @@
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
-#include <queue>
+// #include <queue>
+#include <stack>
 #include <vector>
+#include <pair>
 
 SessionOrganizer::SessionOrganizer()
 {
@@ -182,7 +184,9 @@ void SessionOrganizer::organizePapers(double timer)
         if(count>=localOptimaMovesCount){
             // stuck at local optima
             cout<<"stuck at local optima at time = "<<((double)clock() - timer) / CLOCKS_PER_SEC<<"\n";
-            bfs(timer);
+            cout<<"before iddfs, best score obtained = "<<bestConference->getScore()<<endl;
+            iddfs(timer);
+            cout<<"from iddfs, best score obtained = "<<bestConference->getScore()<<endl;
             // break;
         }
 
@@ -196,74 +200,95 @@ void SessionOrganizer::organizePapers(double timer)
 //     return c1->getScore() < c2->getScore();
 // }
 
-void SessionOrganizer::bfs(double timer)
+void SessionOrganizer::iddfs(double timer)
 {
     // priority_queue<Conference*, vector<Conference*> > frontier;
-    queue<Conference*> frontier;
+    stack< pair<Conference*,int> > frontier;
     // branching factor
     int b = 5;
-    frontier.push(conference);
+    // frontier.push(conference);
     Conference* tempConference;
     int trackIndex1, trackIndex2, sessionIndex1, sessionIndex2, paperIndex1, paperIndex2, scoreChange, paperId1, paperId2;
+    pair<Conference*,int> rootnode, node, tempnode;
+    rootnode.first = conference;
+    rootnode.second = 0;
 
+    // limit for depth
+    int depth = 2;
     while(true){
-        // cout<<conference->getScore()<<endl;
-        // getchar();
+        frontier.push(rootnode);
+        while(!frontier.empty()){
+            // cout<<conference->getScore()<<endl;
+            // getchar();
 
-        // conference = frontier.top();
-        conference = frontier.front();
-        frontier.pop();
+            node = frontier.top();
+            frontier.pop();
+            conference = node.first;
 
-        // if(conference->getScore() > bestConference->getScore()){
-        //     copyConference(conference, bestConference);
-        //     cout<<bestConference->getScore()<<endl;
-        // }
+            // if(conference->getScore() > bestConference->getScore()){
+            //     copyConference(conference, bestConference);
+            //     cout<<bestConference->getScore()<<endl;
+            // }
 
-        for(int i=0;i<b;i++){
-            trackIndex1 = rand()%t;
-            sessionIndex1 = rand()%p;
-            paperIndex1 = rand()%k;
+            if(node.second < depth){
+                for(int i=0;i<b;i++){ // generating and pushing b random neighbours of conference
+                    trackIndex1 = rand()%t;
+                    sessionIndex1 = rand()%p;
+                    paperIndex1 = rand()%k;
 
-            do{
-                trackIndex2 = rand()%t;
-                sessionIndex2 = rand()%p;
-                paperIndex2 = rand()%k;
-            }while(trackIndex1==trackIndex2 && sessionIndex1==sessionIndex2);
+                    do{
+                        trackIndex2 = rand()%t;
+                        sessionIndex2 = rand()%p;
+                        paperIndex2 = rand()%k;
+                    }while(trackIndex1==trackIndex2 && sessionIndex1==sessionIndex2);
 
-            scoreChange = swapCostChange(trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2);
+                    scoreChange = swapCostChange(trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2);
 
-            tempConference = new Conference(t,p,k);
-            copyConference(conference, tempConference);
-            paperId1 = conference->getTrack(trackIndex1).getSession(sessionIndex1).getPaper(paperIndex1);
-            paperId2 = conference->getTrack(trackIndex2).getSession(sessionIndex2).getPaper(paperIndex2);
-            tempConference -> setPaper(trackIndex1, sessionIndex1, paperIndex1, paperId2);
-            tempConference -> setPaper(trackIndex2, sessionIndex2, paperIndex2, paperId1);
+                    tempConference = new Conference(t,p,k);
+                    copyConference(conference, tempConference);
+                    paperId1 = conference->getTrack(trackIndex1).getSession(sessionIndex1).getPaper(paperIndex1);
+                    paperId2 = conference->getTrack(trackIndex2).getSession(sessionIndex2).getPaper(paperIndex2);
+                    tempConference -> setPaper(trackIndex1, sessionIndex1, paperIndex1, paperId2);
+                    tempConference -> setPaper(trackIndex2, sessionIndex2, paperIndex2, paperId1);
 
-            tempConference->setScore( conference->getScore() + scoreChange );
+                    tempConference->setScore( conference->getScore() + scoreChange );
 
-            frontier.push(tempConference);
+                    tempnode.first = tempConference;
+                    tempnode.second = node.second + 1;
+                    frontier.push(tempnode);
+
+                    if(((double)clock() - timer) / CLOCKS_PER_SEC > 60 * processingTime - 0.01)
+                        return;
+                }
+            }
+
+            if(conference->getScore() <= bestConference->getScore())
+                delete(conference);
+            else{
+                copyConference(conference, bestConference);
+                // cout<<2<<endl;
+                // cout<<"ended iddfs on score = ";
+                // cout<<bestConference->getScore()<<endl;
+                // bestConference->printConferenceToConsole();
+                return;
+            }
         }
 
-        if(conference->getScore() <= bestConference->getScore())
-            delete(conference);
-        else
-            break;
-
-        if(((double)clock() - timer) / CLOCKS_PER_SEC > 60 * processingTime - 0.01)
-            return;
+        depth++;
+        cout<<"depth = "<<depth<<endl;
     }
 
     // DELETE ALL FRONTIER ELEMENTS
     // cout<<"hi\n";
 
-    if(conference->getScore() > bestConference->getScore()){
-        // cout<<1<<endl;
-        copyConference(conference, bestConference);
-        // cout<<2<<endl;
-        cout<<"ended bfs on score = ";
-        cout<<bestConference->getScore()<<endl;
-        bestConference->printConferenceToConsole();
-    }
+    // if(conference->getScore() > bestConference->getScore()){
+    //     // cout<<1<<endl;
+    //     copyConference(conference, bestConference);
+    //     // cout<<2<<endl;
+    //     cout<<"ended bfs on score = ";
+    //     cout<<bestConference->getScore()<<endl;
+    //     bestConference->printConferenceToConsole();
+    // }
 
     // cout<<"hi2\n";
 }
