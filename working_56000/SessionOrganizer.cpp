@@ -27,13 +27,10 @@ SessionOrganizer::SessionOrganizer(string filename)
 
 void SessionOrganizer::updateBestConference()
 {
-    for(int i = 0; i < t; i++){
-        for(int j=0;j<p;j++){
-            for(int l=0;l<k;l++){
-                bestConference -> setPaper(i, j, l, conference -> getTrack(i).getSession(j).getPaper(l) );
-            }
-        }
-    }
+    for(int i = 0; i < t; i++)
+        for(int j = 0; j < p; j++)
+            for(int l = 0;l < k; l++)
+                bestConference -> setPaper(i, j, l, conference -> getTrack(i).getSession(j).getPaper(l));
     bestConference -> setScore(conference -> getScore());
 }
 
@@ -280,7 +277,7 @@ double SessionOrganizer::scoreOrganization()
 
 double SessionOrganizer::getBestScore()
 {
-    return bestConference->getScore();
+    return bestConference -> getScore();
 }
 
 double SessionOrganizer::swapCostChange(int trackIndex1, int sessionIndex1, int paperIndex1, int trackIndex2, int sessionIndex2, int paperIndex2)
