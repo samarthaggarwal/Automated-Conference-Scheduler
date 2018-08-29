@@ -181,10 +181,9 @@ void SessionOrganizer::organizePapers(double timer)
 
         if(count>=localOptimaMovesCount){
             // stuck at local optima
-            // bfs();
             cout<<"stuck at local optima at time = "<<((double)clock() - timer) / CLOCKS_PER_SEC<<"\n";
             bfs(timer);
-            break;
+            // break;
         }
 
         if(((double)clock() - timer) / CLOCKS_PER_SEC > 60 * processingTime - 0.01)
@@ -208,7 +207,7 @@ void SessionOrganizer::bfs(double timer)
     int trackIndex1, trackIndex2, sessionIndex1, sessionIndex2, paperIndex1, paperIndex2, scoreChange, paperId1, paperId2;
 
     while(true){
-        cout<<conference->getScore()<<endl;
+        // cout<<conference->getScore()<<endl;
         // getchar();
 
         // conference = frontier.top();
@@ -255,18 +254,18 @@ void SessionOrganizer::bfs(double timer)
     }
 
     // DELETE ALL FRONTIER ELEMENTS
-    cout<<"hi\n";
+    // cout<<"hi\n";
 
     if(conference->getScore() > bestConference->getScore()){
-        cout<<1<<endl;
+        // cout<<1<<endl;
         copyConference(conference, bestConference);
-        cout<<2<<endl;
+        // cout<<2<<endl;
         cout<<"ended bfs on score = ";
         cout<<bestConference->getScore()<<endl;
         bestConference->printConferenceToConsole();
     }
 
-    cout<<"hi2\n";
+    // cout<<"hi2\n";
 }
 
 void SessionOrganizer::readInInputFile(string filename)
