@@ -27,8 +27,13 @@ SessionOrganizer::SessionOrganizer(string filename)
 
 void SessionOrganizer::updateBestConference()
 {
-    for(int i = 0; i < t; i++)
-        bestConference -> setTrack(conference -> getTrack(i), i);
+    for(int i = 0; i < t; i++){
+        for(int j=0;j<p;j++){
+            for(int l=0;l<k;l++){
+                bestConference -> setPaper(i, j, l, conference -> getTrack(i).getSession(j).getPaper(l) );
+            }
+        }
+    }
     bestConference -> setScore(conference -> getScore());
 }
 
@@ -116,7 +121,7 @@ void SessionOrganizer::organizePapersGreedyHillClimbing(double timer, int numNei
             conference -> setPaper(exchangeIndices[maxScoreIndex][3], exchangeIndices[maxScoreIndex][4], exchangeIndices[maxScoreIndex][5], paperId1);
 
             conference -> setScore(conference -> getScore() + maxScoreChange);
-            cout << conference -> getScore() << endl;
+            // cout << conference -> getScore() << endl;
         }
 
         if(conference-> getScore() > bestConference -> getScore())
@@ -170,7 +175,7 @@ void SessionOrganizer::organizePapersSimulatedAnnealing(double timer)
             conference -> setPaper(exchangeIndices[3], exchangeIndices[4], exchangeIndices[5], paperId1);
 
             conference -> setScore(conference -> getScore() + scoreChange);
-            cout << conference -> getScore() << endl;
+            // cout << conference -> getScore() << endl;
         }
 
         if(conference-> getScore() > bestConference -> getScore())
