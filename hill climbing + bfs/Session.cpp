@@ -18,14 +18,15 @@ Session::Session(int k)
     initPapers(k);
 }
 
-// Session::~Session()
-// {
-//     free(papers);
-// }
+Session::~Session()
+{
+    delete(papers);
+}
 
 void Session::initPapers(int k)
 {
-    this -> papers = (int *)malloc(sizeof(int) * k);
+    // this -> papers = (int *)malloc(sizeof(int) * k);
+    this->papers = new int[k];
     for(int i = 0; i < k; i++)
     {
         papers[i] = -1;

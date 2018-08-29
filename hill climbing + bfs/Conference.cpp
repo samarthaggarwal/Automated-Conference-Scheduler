@@ -22,10 +22,10 @@ Conference::Conference(int t, int p, int k)
     initTracks(t, p, k);
 }
 
-Conference::~Conference()
-{
-    free(tracks);
-}
+// Conference::~Conference()
+// {
+//     free(tracks);
+// }
 
 void Conference::initTracks(int t, int p, int k)
 {

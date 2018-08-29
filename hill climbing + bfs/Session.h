@@ -33,7 +33,7 @@ public:
      */
     Session(int papersInSession);
 
-    // ~Session();
+    ~Session();
 
     /*
      * Initialize the array of papers.
