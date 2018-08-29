@@ -6,7 +6,7 @@
 // #include <queue>
 #include <stack>
 #include <vector>
-#include <pair>
+#include <utility>
 
 SessionOrganizer::SessionOrganizer()
 {
@@ -208,15 +208,27 @@ void SessionOrganizer::iddfs(double timer)
     int b = 5;
     // frontier.push(conference);
     Conference* tempConference;
+    Conference* originalConference = new Conference(t,p,k);
+    copyConference(conference, originalConference);
     int trackIndex1, trackIndex2, sessionIndex1, sessionIndex2, paperIndex1, paperIndex2, scoreChange, paperId1, paperId2;
-    pair<Conference*,int> rootnode, node, tempnode;
-    rootnode.first = conference;
-    rootnode.second = 0;
+    pair<Conference*,int> node, tempnode;
+    // rootnode.first = conference;
+    // rootnode.second = 0;
+
+    cout<<"printing original conference before iddfs\n";
+    conference->printConferenceToConsole();
 
     // limit for depth
     int depth = 2;
     while(true){
-        frontier.push(rootnode);
+        // cout<<"hi\n";
+        // originalConference->printConferenceToConsole();
+        copyConference(originalConference, conference);
+        conference -> printConferenceToConsole();
+        node.first = conference;
+        node.second = 0;
+
+        frontier.push(node);
         while(!frontier.empty()){
             // cout<<conference->getScore()<<endl;
             // getchar();
@@ -231,6 +243,7 @@ void SessionOrganizer::iddfs(double timer)
             // }
 
             if(node.second < depth){
+
                 for(int i=0;i<b;i++){ // generating and pushing b random neighbours of conference
                     trackIndex1 = rand()%t;
                     sessionIndex1 = rand()%p;
@@ -242,7 +255,18 @@ void SessionOrganizer::iddfs(double timer)
                         paperIndex2 = rand()%k;
                     }while(trackIndex1==trackIndex2 && sessionIndex1==sessionIndex2);
 
+                    // cout<<trackIndex1<<" "<<sessionIndex1<<" "<<paperIndex1<<" "<<trackIndex2<<" "<<sessionIndex2<<" "<<paperIndex2<<endl;
+                    // cout<<"t = "<<conference -> gett()<<endl;
+                    // cout<<"p ="<<conference -> getp()<<endl;
+                    // conference -> getTrack(trackIndex1).getSession(0);
+                    // cout<<"hi\n";
+                    // cout<<"k = "<<conference -> getTrack(trackIndex1).getSession(0).getNumberOfPapers()<<endl;
+                    // cout<<"p by getNumberOfSessions ="<<conference -> getTrack(trackIndex1).getNumberOfSessions()<<endl;
+                    // conference->printConferenceToConsole();
+
                     scoreChange = swapCostChange(trackIndex1, sessionIndex1, paperIndex1, trackIndex2, sessionIndex2, paperIndex2);
+
+                    // cout<<"p in caller="<<conference -> getTrack(trackIndex1).getNumberOfSessions()<<endl;
 
                     tempConference = new Conference(t,p,k);
                     copyConference(conference, tempConference);
@@ -262,7 +286,7 @@ void SessionOrganizer::iddfs(double timer)
                 }
             }
 
-            if(conference->getScore() <= bestConference->getScore())
+            if(conference->getScore() <= bestConference->getScore() && frontier.size()>0)
                 delete(conference);
             else{
                 copyConference(conference, bestConference);
@@ -275,7 +299,8 @@ void SessionOrganizer::iddfs(double timer)
         }
 
         depth++;
-        cout<<"depth = "<<depth<<endl;
+        cout<<"\n\n\n\n\n\n\ndepth = "<<depth<<endl;
+        // cout<<frontier.size()<<endl;
     }
 
     // DELETE ALL FRONTIER ELEMENTS

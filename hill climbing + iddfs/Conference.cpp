@@ -109,6 +109,7 @@ void Conference::printConference(char* filename)
 
 void Conference::printConferenceToConsole()
 {
+    // cout<<"t="<<t<<" p="<<p<<" k="<<k<<endl;
     for(int i=0;i<t;i++){
         for(int j=0;j<p;j++){
             for(int l=0;l<k;l++){
