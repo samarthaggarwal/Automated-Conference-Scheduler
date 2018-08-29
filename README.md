@@ -40,3 +40,6 @@ better to boil at lower temperature, increase neighbors, increase break count fo
         else
             Temperature = 500 / itr;
 	and neighbors = 250, count = 1000
+
+maxima seen = 56136
+
