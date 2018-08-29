@@ -28,5 +28,18 @@ additions :
 - enforced hill climbing
 - simulated enealing
 
+in3.txt
+better to boil at lower temperature, increase neighbors, increase break count for ghc
+545109 - if(Temperature > 2)
+            Temperature = 200 - itr / 4;
+        else
+            Temperature = 800 / itr;
+	and neighbors = 250, count = 1000
+545570- if(Temperature > 2)
+            Temperature = 100 - itr / 5;
+        else
+            Temperature = 500 / itr;
+	and neighbors = 250, count = 1000
 
 maxima seen = 56136
+
