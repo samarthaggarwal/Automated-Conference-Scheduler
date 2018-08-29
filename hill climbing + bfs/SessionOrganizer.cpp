@@ -236,6 +236,7 @@ void SessionOrganizer::bfs()
         }
 
         delete(conference);
+        // CONTINUE FROM HERE
     }
 
 }
