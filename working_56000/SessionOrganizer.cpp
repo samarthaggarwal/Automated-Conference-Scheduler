@@ -46,7 +46,7 @@ void SessionOrganizer::randomInitialization()
 
     for(int i = 0; i < t; i++)
         for(int j = 0; j < p; j++)
-            for(int l=0;l<k;l++)
+            for(int l = 0; l < k; l++)
             {
                 randPaper = rand() % numPapers;
                 while(papersAssigned[randPaper] == true)
@@ -62,13 +62,49 @@ void SessionOrganizer::organizePapers(double timer)
 {
     srand(time(NULL));
     randomInitialization();
-    int numNeighbours = 225;
+    int numNeighbours = 0;
+    double heat = 1.0;
+
+    int n = k * t * p;
+    if(n <= 1000)
+        numNeighbours = 235;
+    else if(n <= 2000)
+        numNeighbours = 210;
+    else if(n <= 3000)
+        numNeighbours = 185;
+    else if(n <= 4000)
+        numNeighbours = 170;
+    else if(n <= 5000)
+        numNeighbours = 145;
+    else if(n <= 6000)
+        numNeighbours = 120;
+    else if(n <= 7000)
+        numNeighbours = 95;
+    else if(n <= 8000)
+        numNeighbours = 70;
+    else if(n <= 9000)
+        numNeighbours = 65;
+    else if(n <= 10000)
+        numNeighbours = 50;
+    else
+        numNeighbours = 40;
+
+    if(n <= 1000)
+        heat = 500.0;
+    else if(n <= 5000)
+        heat = 400.0;
+    else
+        heat = 200.0;
+
+    int increment = 10;
+
     while(true)
     {
-        organizePapersGreedyHillClimbing(timer, numNeighbours += 15);
-        organizePapersSimulatedAnnealing(timer);
-        if((((double)clock() - timer) / CLOCKS_PER_SEC) > (60 * processingTime - 0.1))
+        organizePapersGreedyHillClimbing(timer, numNeighbours + (increment+=10));
+        organizePapersSimulatedAnnealing(timer, heat);
+        if((((double)clock() - timer) / CLOCKS_PER_SEC) > (60 * processingTime - 1))
             return;
+        numNeighbours = 250;
     }
 }
 
@@ -118,7 +154,7 @@ void SessionOrganizer::organizePapersGreedyHillClimbing(double timer, int numNei
             conference -> setPaper(exchangeIndices[maxScoreIndex][3], exchangeIndices[maxScoreIndex][4], exchangeIndices[maxScoreIndex][5], paperId1);
 
             conference -> setScore(conference -> getScore() + maxScoreChange);
-            // cout << conference -> getScore() << endl;
+            cout << conference -> getScore() << endl;
         }
 
         if(conference-> getScore() > bestConference -> getScore())
@@ -127,12 +163,12 @@ void SessionOrganizer::organizePapersGreedyHillClimbing(double timer, int numNei
         if(count == 1000)
             break;
 
-        if((((double)clock() - timer) / CLOCKS_PER_SEC) > (60 * processingTime - 0.1))
+        if((((double)clock() - timer) / CLOCKS_PER_SEC) > (60 * processingTime - 1))
             return;
     }
 }
 
-void SessionOrganizer::organizePapersSimulatedAnnealing(double timer)
+void SessionOrganizer::organizePapersSimulatedAnnealing(double timer, double heat)
 {
     int exchangeIndices[6];
 
@@ -144,9 +180,9 @@ void SessionOrganizer::organizePapersSimulatedAnnealing(double timer)
     for(int itr = 1; Temperature > 0.01; itr++)
     {
         if(Temperature > 2)
-            Temperature = 100 - itr / 5;
+            Temperature = 50.0 - itr / 10.0;
         else
-            Temperature = 500 / itr;
+            Temperature = 1000.0 * heat / itr;
 
         exchangeIndices[0] = rand() % (conference -> gett());
         exchangeIndices[1] = rand() % (conference -> getp());
@@ -172,13 +208,13 @@ void SessionOrganizer::organizePapersSimulatedAnnealing(double timer)
             conference -> setPaper(exchangeIndices[3], exchangeIndices[4], exchangeIndices[5], paperId1);
 
             conference -> setScore(conference -> getScore() + scoreChange);
-            // cout << conference -> getScore() << endl;
+            cout << conference -> getScore() << endl;
         }
 
         if(conference-> getScore() > bestConference -> getScore())
             updateBestConference();
 
-        if((((double)clock() - timer) / CLOCKS_PER_SEC) > (60 * processingTime - 0.1))
+        if((((double)clock() - timer) / CLOCKS_PER_SEC) > (60 * processingTime - 1))
             return;
     }
 }
@@ -296,7 +332,7 @@ double SessionOrganizer::swapCostChange(int trackIndex1, int sessionIndex1, int 
     change *= (c + 1);
 
     if(trackIndex1 == trackIndex2)
-      change += (c + 1) * 2 * distance[paperId1][paperId2];
+      change += (c + 1) * distance[paperId1][paperId2];
     else
     {
         change += 2 * distance[paperId1][paperId2];

@@ -22,8 +22,8 @@ int main(int argc, char** argv)
     organizer -> printSessionOrganiser(argv[2]);
 
     // Score the organization against the gold standard.
-    // double score = organizer -> getBestScore();
-    // cout << "Score: " << score << endl;
+    double score = organizer -> getBestScore();
+    cout << "Score: " << score << endl;
 
     return 0;
 }
