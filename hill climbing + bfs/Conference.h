@@ -44,7 +44,7 @@ public:
      */
     Conference(int t, int p, int k);
 
-    // ~Conference();
+    ~Conference();
 
     /*
      * Initialize the tracks.
