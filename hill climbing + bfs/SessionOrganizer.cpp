@@ -210,8 +210,10 @@ void SessionOrganizer::bfs(double timer)
         conference = frontier.top();
         frontier.pop();
 
-        if(conference->getScore() > bestConference->getScore())
+        if(conference->getScore() > bestConference->getScore()){
             copyConference(conference, bestConference);
+            cout<<bestConference->getScore()<<endl;
+        }
 
         for(int i=0;i<b;i++){
             trackIndex1 = rand()%t;
