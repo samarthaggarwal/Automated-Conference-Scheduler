@@ -68,7 +68,7 @@ public:
     /*
      * Organize the papers using Simulated Annealing
      */
-    void organizePapersSimulatedAnnealing(double timer);
+    void organizePapersSimulatedAnnealing(double timer, double heat);
 
     /*
      * Get the distance matrix.
