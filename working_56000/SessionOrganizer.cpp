@@ -27,13 +27,10 @@ SessionOrganizer::SessionOrganizer(string filename)
 
 void SessionOrganizer::updateBestConference()
 {
-    for(int i = 0; i < t; i++){
-        for(int j=0;j<p;j++){
-            for(int l=0;l<k;l++){
-                bestConference -> setPaper(i, j, l, conference -> getTrack(i).getSession(j).getPaper(l) );
-            }
-        }
-    }
+    for(int i = 0; i < t; i++)
+        for(int j = 0; j < p; j++)
+            for(int l = 0;l < k; l++)
+                bestConference -> setPaper(i, j, l, conference -> getTrack(i).getSession(j).getPaper(l));
     bestConference -> setScore(conference -> getScore());
 }
 
