@@ -28,7 +28,7 @@ void Conference::initTracks(int t, int p, int k)
     for(int i = 0; i < t; i++)
     {
         Track tempTrack(p);
-        for (int j = 0; j < p; j++)
+        for(int j = 0; j < p; j++)
         {
             Session tempSession(k);
             tempTrack.setSession(j, tempSession);
