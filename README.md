@@ -1,25 +1,22 @@
 # Automated-Conference-Scheduler
 Artificial Intelligence - Assignment 1
 
+A Conference scheduler that uses a combination of greedy hill climbing and simulated annealing to find the best schedule.
+Also tried enforced hill climbing, hill climbing with uniform cost search, hill climbing with Iterative Deepening Depth First Search.
 
 class descriptions :
 session : (set of papers going on parallely)
-  int *papers;
-  int numPapers;
-
-
+    int *papers
+    int numPapers
 track : (set of sessions happening in a single time slot)
-    session *sessions;
-    int numSessions;
-
+    session *sessions
+    int numSessions
 conference : (time slot)
-    track *tracks;
-    int numTracks; (previously parallelTracks)
-    int numSessions; (previously sessionsInTrack)
-    int numPapers; (previously papersInSession)
-
-
-additions :
+    track *tracks
+    int numTracks (previously parallelTracks)
+    int numSessions (previously sessionsInTrack)
+    int numPapers (previously papersInSession)
+# additions :
 - probabilistic move to bad neighbours
 - restart after improvement goes below threshold
 
@@ -29,6 +26,7 @@ additions :
 - simulated enealing
 
 in3.txt
+# Observations :
 better to boil at lower temperature, increase neighbors, increase break count for ghc
 545109 - if(Temperature > 2)
             Temperature = 200 - itr / 4;
@@ -42,4 +40,3 @@ better to boil at lower temperature, increase neighbors, increase break count fo
 	and neighbors = 250, count = 1000
 
 maxima seen = 56136
-
